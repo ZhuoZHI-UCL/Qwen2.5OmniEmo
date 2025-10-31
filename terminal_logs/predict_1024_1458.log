@@ -1,0 +1,50 @@
+[2025-10-24 14:58:14,694] [INFO] [real_accelerator.py:254:get_accelerator] Setting ds_accelerator to cuda (auto detect)
+[2025-10-24 14:58:15,995] [INFO] [logging.py:107:log_dist] [Rank -1] [TorchCheckpointEngine] Initialized with serialization = False
+Traceback (most recent call last):
+  File "/home/CORP/zhuo.zhi/miniconda3/envs/qwen2.5omniemo/lib/python3.12/importlib/metadata/__init__.py", line 397, in from_name
+    return next(cls.discover(name=name))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+StopIteration
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/transformers/utils/versions.py", line 102, in require_version
+    got_ver = importlib.metadata.version(pkg)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/CORP/zhuo.zhi/miniconda3/envs/qwen2.5omniemo/lib/python3.12/importlib/metadata/__init__.py", line 888, in version
+    return distribution(distribution_name).version
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/CORP/zhuo.zhi/miniconda3/envs/qwen2.5omniemo/lib/python3.12/importlib/metadata/__init__.py", line 861, in distribution
+    return Distribution.from_name(distribution_name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/CORP/zhuo.zhi/miniconda3/envs/qwen2.5omniemo/lib/python3.12/importlib/metadata/__init__.py", line 399, in from_name
+    raise PackageNotFoundError(name)
+importlib.metadata.PackageNotFoundError: No package metadata was found for nltk
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/CORP/zhuo.zhi/miniconda3/envs/qwen2.5omniemo/bin/llamafactory-cli", line 8, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/cli.py", line 151, in main
+    COMMAND_MAP[command]()
+  File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/launcher.py", line 41, in run_exp
+    return _run_exp()  # use absolute import
+           ^^^^^^^^^^
+  File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/train/tuner.py", line 110, in run_exp
+    _training_function(config={"args": args, "callbacks": callbacks})
+  File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/train/tuner.py", line 55, in _training_function
+    model_args, data_args, training_args, finetuning_args, generating_args = get_train_args(args)
+                                                                             ^^^^^^^^^^^^^^^^^^^^
+  File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/hparams/parser.py", line 322, in get_train_args
+    _check_extra_dependencies(model_args, finetuning_args, training_args)
+  File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/hparams/parser.py", line 190, in _check_extra_dependencies
+    check_version("nltk", mandatory=True)
+  File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/extras/misc.py", line 92, in check_version
+    require_version(requirement, hint)
+  File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/transformers/utils/versions.py", line 104, in require_version
+    raise importlib.metadata.PackageNotFoundError(
+importlib.metadata.PackageNotFoundError: No package metadata was found for The 'nltk' distribution was not found and is required by this application. 
+To fix: run `pip install nltk`.

@@ -1,0 +1,8 @@
+Metadata-Version: 2.4
+Name: transformers
+Version: 4.52.2
+Summary: Local patched Transformers for this project
+Requires-Python: >=3.8
+Description-Content-Type: text/plain
+
+Local patched Transformers bundled with the project

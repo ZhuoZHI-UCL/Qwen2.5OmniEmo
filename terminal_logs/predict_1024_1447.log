@@ -1,0 +1,19 @@
+[2025-10-24 14:47:30,945] [INFO] [real_accelerator.py:254:get_accelerator] Setting ds_accelerator to cuda (auto detect)
+[2025-10-24 14:47:32,520] [INFO] [logging.py:107:log_dist] [Rank -1] [TorchCheckpointEngine] Initialized with serialization = False
+Traceback (most recent call last):
+  File "/home/CORP/zhuo.zhi/miniconda3/envs/qwen2.5omniemo/bin/llamafactory-cli", line 8, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/cli.py", line 151, in main
+    COMMAND_MAP[command]()
+  File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/launcher.py", line 41, in run_exp
+    return _run_exp()  # use absolute import
+           ^^^^^^^^^^
+  File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/train/tuner.py", line 110, in run_exp
+    _training_function(config={"args": args, "callbacks": callbacks})
+  File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/train/tuner.py", line 55, in _training_function
+    model_args, data_args, training_args, finetuning_args, generating_args = get_train_args(args)
+                                                                             ^^^^^^^^^^^^^^^^^^^^
+  File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/hparams/parser.py", line 270, in get_train_args
+    raise ValueError("Please specify dataset for evaluation.")
+ValueError: Please specify dataset for evaluation.

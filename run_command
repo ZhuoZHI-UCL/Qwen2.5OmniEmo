@@ -1,0 +1,48 @@
+debug的时候运行:
+前提是需要手动设置 /home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/data/dataset_info.json 中为
+  "file_name": "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/data/dataset/lemon/annotation/built_test_for_debug.jsonl",
+  "val_file": "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/data/dataset/lemon/annotation/built_test_for_debug.jsonl",
+
+HF_MODULES_CACHE=/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/hf_cache/Qwen2.5-Omni-7B CUDA_VISIBLE_DEVICES=1 llamafactory-cli train /home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/qwen2_5_full_sft.yaml
+
+
+使用deepseed zero2进行debug的时候 (一个样本用于debug):
+HF_MODULES_CACHE=/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/hf_cache/Qwen2.5-Omni-7B FORCE_TORCHRUN=1 DISABLE_VERSION_CHECK=1 CUDA_VISIBLE_DEVICES=0 llamafactory-cli train /home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/qwen2_5_full_sft.yaml
+
+
+使用deepseed zero2进行正式的时候 :
+HF_MODULES_CACHE=/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/hf_cache/Qwen2.5-Omni-7B \
+FORCE_TORCHRUN=1 \
+DISABLE_VERSION_CHECK=1 \
+CUDA_VISIBLE_DEVICES=0,1,2,3 \
+llamafactory-cli train /home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/qwen2_5_full_sft.yaml \
+2>&1 | tee "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/terminal_logs/output_$(date '+%m%d_%H%M').log"
+
+
+合并得到的lora模型权重
+python /home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/demos/merge_lora.py
+
+替换config文件为现在的，保留之前的为 config_backup.json
+
+
+使用训练集进行测试看看效果咋样
+; HF_MODULES_CACHE=/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/hf_cache/Qwen2.5-Omni-7B \
+FORCE_TORCHRUN=1 \
+DISABLE_VERSION_CHECK=1 \
+CUDA_VISIBLE_DEVICES=0,1,2,3 \
+llamafactory-cli train /home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/qwen2_5_full_sft_test.yaml \
+2>&1 | tee "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/terminal_logs/output_$(date '+%m%d_%H%M').log"
+
+
+
+
+需要调节的参数:
+1. 最小的chunk_size: hf_cache/models--Qwen--Qwen2.5-Omni-7B/snapshots/ae9e1690543ffd5c0221dc27f79834d0294cba00/config.json
+'seconds_per_chunk', 现在是0.4s
+2. LLaMA-Factory/qwen2_5_full_sft.yaml 中的参数
+3. stream loss的权重: stream_w = getattr(self.config, "stream_loss_weight", 1.0) 修改这个权重哈
+
+
+如果需要copy的话需要复制哪些东西:
+1. 直接压缩整个工程然后上传到hugging face
+2. 创建虚拟环境: 先使用qwen2.5omni.yml创建，然后手动cd 到 transformers 文件夹和 LLaMA-Factory手动安装一下

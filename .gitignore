@@ -1,0 +1,17 @@
+LLaMA-Factory/data/dataset/lemon/video/
+LLaMA-Factory/data/dataset/lemon/audio/
+LLaMA-Factory/data/dataset/lemon/original_txt_annotations/
+LLaMA-Factory/data/dataset/lemon/annotation/built_training.jsonl
+LLaMA-Factory/wandb/
+LLaMA-Factory/test/
+LLaMA-Factory/hf_cache/
+LLaMA-Factory/examples/
+hf_cache/
+assets/
+cookbooks/
+docker/
+low-VRAM-mode/
+output/
+qwen-omni-utils/
+saves/
+

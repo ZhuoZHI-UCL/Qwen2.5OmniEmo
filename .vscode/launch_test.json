@@ -1,0 +1,28 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug LLaMAFactory Train",
+            "type": "python",
+            "request": "launch",
+            "module": "llamafactory.cli",
+            "args": [
+                "train",
+                "qwen2_5_full_sft.yaml"
+            ],
+            "env": {
+                "CUDA_VISIBLE_DEVICES": "1",
+                // "FORCE_TORCHRUN": "1",
+                "DISABLE_VERSION_CHECK" : "1",
+                "HF_MODULES_CACHE": "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/hf_cache/Qwen2.5-Omni-7B",
+                "TRANSFORMERS_CACHE": "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/hf_cache/Qwen2.5-Omni-7B"
+            },
+            "cwd": "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory",  
+            "console": "integratedTerminal",
+            "subProcess": true,
+            "justMyCode": false
+        }
+    ]
+}
+
+//如果在debug的时候报错: ValueError: Please use FORCE_TORCHRUN=1 to launch DeepSpeed training. 直接把yaml文件中的 deepseed给注释掉不使用deepseed就行

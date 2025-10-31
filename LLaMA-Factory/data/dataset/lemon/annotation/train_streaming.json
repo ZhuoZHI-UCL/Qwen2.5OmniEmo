@@ -1,0 +1,17 @@
+[
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "<video><audio>Analyze the emotions in the following streaming video."
+      },
+      {
+        "role": "assistant",
+        "content": 
+      "[{\"timestamp\": 2.113, \"emotion\": \"contempt\", \"summary_reasoning\": \"Self-deprecating words, sneering expression, disdainful tone.\"}, {\"timestamp\": 8.321, \"emotion\": \"bitter\", \"summary_reasoning\": \"Sharp, forceful tone, resentful words.\"}, {\"timestamp\": 18.652, \"emotion\": \"resentful\", \"summary_reasoning\": \"Accusatory tone, hardened facial expression, blaming words.\"}, {\"timestamp\": 22.537, \"emotion\": \"despair\", \"summary_reasoning\": \"Voice drops, slower speech, sad tone.\"}, {\"timestamp\": 33.778, \"emotion\": \"humiliation\", \"summary_reasoning\": \"Pained expression, shameful tone, turning away.\"}, {\"timestamp\": 40.049, \"emotion\": \"anguish\", \"summary_reasoning\": \"Intense, pained tone, tragic expression, words of cosmic curse.\"}]"
+      }
+    ],
+    "videos": ["dataset/lemon/video/vid_0001_clip2.mp4"],
+    "audios": ["dataset/lemon/audio/vid_0001_clip2.wav"]
+  }
+]

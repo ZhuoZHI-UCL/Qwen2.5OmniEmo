@@ -1,0 +1,54 @@
+# === model ===
+model_name_or_path: "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/output/lemon_omni_lora/merged"  # 使用 merged 下的 tokenizer/processor
+trust_remote_code: false   # Qwen2.5-Omni 需要
+
+use_audio_in_video: true
+video_fps: 5
+video_maxlen: 300
+video_max_pixels: 36864
+tokenized_path: "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/saves/datasets/lemon_tok_192_1sample"
+
+# === method ===
+stage: sft
+do_train: true
+finetuning_type: lora
+print_param_status: true
+
+# LoRA 超参（保持你的设置）
+lora_rank: 16
+lora_alpha: 32
+lora_dropout: 0.1
+freeze_vision_tower: true
+
+# === dataset ===
+dataset: lemon
+template: qwen2_omni
+cutoff_len: 8192
+overwrite_cache: true
+preprocessing_num_workers: 1
+streaming: false
+dataloader_drop_last: true
+
+# === output ===
+output_dir: "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/output/lemon_omni_lora_test"
+logging_steps: 5
+save_steps: 100
+save_total_limit: 1
+plot_loss: false
+overwrite_output_dir: false
+
+# === train ===
+use_cache: false
+dataloader_pin_memory: false
+max_steps: 201
+per_device_train_batch_size: 1
+gradient_accumulation_steps: 8
+learning_rate: 2.0e-5
+lr_scheduler_type: cosine
+warmup_ratio: 0.03
+bf16: true
+tf32: true
+ddp_timeout: 180000000
+gradient_checkpointing: true
+seed: 42
+report_to: wandb

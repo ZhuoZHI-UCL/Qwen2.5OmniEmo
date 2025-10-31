@@ -1,0 +1,438 @@
+[2025-10-24 14:59:41,870] [INFO] [real_accelerator.py:254:get_accelerator] Setting ds_accelerator to cuda (auto detect)
+[2025-10-24 14:59:43,490] [INFO] [logging.py:107:log_dist] [Rank -1] [TorchCheckpointEngine] Initialized with serialization = False
+[INFO|2025-10-24 14:59:44] llamafactory.hparams.parser:423 >> Process rank: 0, world size: 1, device: cuda:0, distributed training: False, compute dtype: torch.bfloat16
+[INFO|tokenization_utils_base.py:2021] 2025-10-24 14:59:44,960 >> loading file vocab.json
+[INFO|tokenization_utils_base.py:2021] 2025-10-24 14:59:44,960 >> loading file merges.txt
+[INFO|tokenization_utils_base.py:2021] 2025-10-24 14:59:44,960 >> loading file tokenizer.json
+[INFO|tokenization_utils_base.py:2021] 2025-10-24 14:59:44,960 >> loading file added_tokens.json
+[INFO|tokenization_utils_base.py:2021] 2025-10-24 14:59:44,960 >> loading file special_tokens_map.json
+[INFO|tokenization_utils_base.py:2021] 2025-10-24 14:59:44,960 >> loading file tokenizer_config.json
+[INFO|tokenization_utils_base.py:2021] 2025-10-24 14:59:44,960 >> loading file chat_template.jinja
+[INFO|tokenization_utils_base.py:2299] 2025-10-24 14:59:45,258 >> Special tokens have been added in the vocabulary, make sure the associated word embeddings are fine-tuned or trained.
+[INFO|image_processing_base.py:378] 2025-10-24 14:59:45,259 >> loading configuration file /home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/output/lemon_omni_lora/merged/preprocessor_config.json
+[INFO|image_processing_base.py:378] 2025-10-24 14:59:45,264 >> loading configuration file /home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/output/lemon_omni_lora/merged/preprocessor_config.json
+[INFO|image_processing_base.py:433] 2025-10-24 14:59:45,265 >> Image processor Qwen2VLImageProcessor {
+  "chunk_length": 300,
+  "dither": 0.0,
+  "do_convert_rgb": true,
+  "do_normalize": true,
+  "do_rescale": true,
+  "do_resize": true,
+  "feature_size": 128,
+  "hop_length": 160,
+  "image_mean": [
+    0.48145466,
+    0.4578275,
+    0.40821073
+  ],
+  "image_processor_type": "Qwen2VLImageProcessor",
+  "image_std": [
+    0.26862954,
+    0.26130258,
+    0.27577711
+  ],
+  "max_pixels": 12845056,
+  "merge_size": 2,
+  "min_pixels": 3136,
+  "n_fft": 400,
+  "n_samples": 4800000,
+  "nb_max_frames": 30000,
+  "padding_side": "right",
+  "padding_value": 0.0,
+  "patch_size": 14,
+  "processor_class": "Qwen2_5OmniProcessor",
+  "resample": 3,
+  "rescale_factor": 0.00392156862745098,
+  "return_attention_mask": true,
+  "sampling_rate": 16000,
+  "size": {
+    "longest_edge": 12845056,
+    "shortest_edge": 3136
+  },
+  "temporal_patch_size": 2
+}
+
+[INFO|video_processing_utils.py:627] 2025-10-24 14:59:45,265 >> loading configuration file /home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/output/lemon_omni_lora/merged/video_preprocessor_config.json
+[INFO|video_processing_utils.py:683] 2025-10-24 14:59:45,266 >> Video processor Qwen2VLVideoProcessor {
+  "_valid_kwargs_names": [
+    "do_convert_rgb",
+    "do_resize",
+    "size",
+    "size_divisor",
+    "default_to_square",
+    "resample",
+    "do_rescale",
+    "rescale_factor",
+    "do_normalize",
+    "image_mean",
+    "image_std",
+    "do_pad",
+    "do_center_crop",
+    "crop_size",
+    "data_format",
+    "input_data_format",
+    "device",
+    "min_pixels",
+    "max_pixels",
+    "patch_size",
+    "temporal_patch_size",
+    "merge_size"
+  ],
+  "chunk_length": 300,
+  "crop_size": null,
+  "data_format": "channels_first",
+  "default_to_square": true,
+  "device": null,
+  "dither": 0.0,
+  "do_center_crop": null,
+  "do_convert_rgb": true,
+  "do_normalize": true,
+  "do_pad": null,
+  "do_rescale": true,
+  "do_resize": true,
+  "feature_extractor_type": "WhisperFeatureExtractor",
+  "feature_size": 128,
+  "hop_length": 160,
+  "image_mean": [
+    0.48145466,
+    0.4578275,
+    0.40821073
+  ],
+  "image_processor_type": "Qwen2VLImageProcessor",
+  "image_std": [
+    0.26862954,
+    0.26130258,
+    0.27577711
+  ],
+  "input_data_format": null,
+  "max_pixels": 12845056,
+  "merge_size": 2,
+  "min_pixels": 3136,
+  "model_valid_processing_keys": [
+    "do_convert_rgb",
+    "do_resize",
+    "size",
+    "size_divisor",
+    "default_to_square",
+    "resample",
+    "do_rescale",
+    "rescale_factor",
+    "do_normalize",
+    "image_mean",
+    "image_std",
+    "do_pad",
+    "do_center_crop",
+    "crop_size",
+    "data_format",
+    "input_data_format",
+    "device",
+    "min_pixels",
+    "max_pixels",
+    "patch_size",
+    "temporal_patch_size",
+    "merge_size"
+  ],
+  "n_fft": 400,
+  "n_samples": 4800000,
+  "nb_max_frames": 30000,
+  "padding_side": "right",
+  "padding_value": 0.0,
+  "patch_size": 14,
+  "processor_class": "Qwen2_5OmniProcessor",
+  "resample": 3,
+  "rescale_factor": 0.00392156862745098,
+  "return_attention_mask": true,
+  "sampling_rate": 16000,
+  "size": {
+    "longest_edge": 12845056,
+    "shortest_edge": 3136
+  },
+  "size_divisor": null,
+  "temporal_patch_size": 2,
+  "video_processor_type": "Qwen2VLVideoProcessor"
+}
+
+[INFO|feature_extraction_utils.py:548] 2025-10-24 14:59:45,269 >> loading configuration file /home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/output/lemon_omni_lora/merged/preprocessor_config.json
+[INFO|feature_extraction_utils.py:597] 2025-10-24 14:59:45,270 >> Feature extractor WhisperFeatureExtractor {
+  "chunk_length": 300,
+  "dither": 0.0,
+  "feature_extractor_type": "WhisperFeatureExtractor",
+  "feature_size": 128,
+  "hop_length": 160,
+  "image_mean": [
+    0.48145466,
+    0.4578275,
+    0.40821073
+  ],
+  "image_processor_type": "Qwen2VLImageProcessor",
+  "image_std": [
+    0.26862954,
+    0.26130258,
+    0.27577711
+  ],
+  "max_pixels": 12845056,
+  "merge_size": 2,
+  "min_pixels": 3136,
+  "n_fft": 400,
+  "n_samples": 4800000,
+  "nb_max_frames": 30000,
+  "padding_side": "right",
+  "padding_value": 0.0,
+  "patch_size": 14,
+  "processor_class": "Qwen2_5OmniProcessor",
+  "return_attention_mask": true,
+  "sampling_rate": 16000,
+  "temporal_patch_size": 2
+}
+
+[INFO|tokenization_utils_base.py:2021] 2025-10-24 14:59:45,270 >> loading file vocab.json
+[INFO|tokenization_utils_base.py:2021] 2025-10-24 14:59:45,271 >> loading file merges.txt
+[INFO|tokenization_utils_base.py:2021] 2025-10-24 14:59:45,271 >> loading file tokenizer.json
+[INFO|tokenization_utils_base.py:2021] 2025-10-24 14:59:45,271 >> loading file added_tokens.json
+[INFO|tokenization_utils_base.py:2021] 2025-10-24 14:59:45,271 >> loading file special_tokens_map.json
+[INFO|tokenization_utils_base.py:2021] 2025-10-24 14:59:45,271 >> loading file tokenizer_config.json
+[INFO|tokenization_utils_base.py:2021] 2025-10-24 14:59:45,271 >> loading file chat_template.jinja
+[INFO|tokenization_utils_base.py:2299] 2025-10-24 14:59:45,656 >> Special tokens have been added in the vocabulary, make sure the associated word embeddings are fine-tuned or trained.
+[INFO|processing_utils.py:990] 2025-10-24 14:59:46,143 >> Processor Qwen2_5OmniProcessor:
+- image_processor: Qwen2VLImageProcessor {
+  "chunk_length": 300,
+  "dither": 0.0,
+  "do_convert_rgb": true,
+  "do_normalize": true,
+  "do_rescale": true,
+  "do_resize": true,
+  "feature_size": 128,
+  "hop_length": 160,
+  "image_mean": [
+    0.48145466,
+    0.4578275,
+    0.40821073
+  ],
+  "image_processor_type": "Qwen2VLImageProcessor",
+  "image_std": [
+    0.26862954,
+    0.26130258,
+    0.27577711
+  ],
+  "max_pixels": 12845056,
+  "merge_size": 2,
+  "min_pixels": 3136,
+  "n_fft": 400,
+  "n_samples": 4800000,
+  "nb_max_frames": 30000,
+  "padding_side": "right",
+  "padding_value": 0.0,
+  "patch_size": 14,
+  "processor_class": "Qwen2_5OmniProcessor",
+  "resample": 3,
+  "rescale_factor": 0.00392156862745098,
+  "return_attention_mask": true,
+  "sampling_rate": 16000,
+  "size": {
+    "longest_edge": 12845056,
+    "shortest_edge": 3136
+  },
+  "temporal_patch_size": 2
+}
+
+- video_processor: Qwen2VLVideoProcessor {
+  "_valid_kwargs_names": [
+    "do_convert_rgb",
+    "do_resize",
+    "size",
+    "size_divisor",
+    "default_to_square",
+    "resample",
+    "do_rescale",
+    "rescale_factor",
+    "do_normalize",
+    "image_mean",
+    "image_std",
+    "do_pad",
+    "do_center_crop",
+    "crop_size",
+    "data_format",
+    "input_data_format",
+    "device",
+    "min_pixels",
+    "max_pixels",
+    "patch_size",
+    "temporal_patch_size",
+    "merge_size"
+  ],
+  "chunk_length": 300,
+  "crop_size": null,
+  "data_format": "channels_first",
+  "default_to_square": true,
+  "device": null,
+  "dither": 0.0,
+  "do_center_crop": null,
+  "do_convert_rgb": true,
+  "do_normalize": true,
+  "do_pad": null,
+  "do_rescale": true,
+  "do_resize": true,
+  "feature_extractor_type": "WhisperFeatureExtractor",
+  "feature_size": 128,
+  "hop_length": 160,
+  "image_mean": [
+    0.48145466,
+    0.4578275,
+    0.40821073
+  ],
+  "image_processor_type": "Qwen2VLImageProcessor",
+  "image_std": [
+    0.26862954,
+    0.26130258,
+    0.27577711
+  ],
+  "input_data_format": null,
+  "max_pixels": 12845056,
+  "merge_size": 2,
+  "min_pixels": 3136,
+  "model_valid_processing_keys": [
+    "do_convert_rgb",
+    "do_resize",
+    "size",
+    "size_divisor",
+    "default_to_square",
+    "resample",
+    "do_rescale",
+    "rescale_factor",
+    "do_normalize",
+    "image_mean",
+    "image_std",
+    "do_pad",
+    "do_center_crop",
+    "crop_size",
+    "data_format",
+    "input_data_format",
+    "device",
+    "min_pixels",
+    "max_pixels",
+    "patch_size",
+    "temporal_patch_size",
+    "merge_size"
+  ],
+  "n_fft": 400,
+  "n_samples": 4800000,
+  "nb_max_frames": 30000,
+  "padding_side": "right",
+  "padding_value": 0.0,
+  "patch_size": 14,
+  "processor_class": "Qwen2_5OmniProcessor",
+  "resample": 3,
+  "rescale_factor": 0.00392156862745098,
+  "return_attention_mask": true,
+  "sampling_rate": 16000,
+  "size": {
+    "longest_edge": 12845056,
+    "shortest_edge": 3136
+  },
+  "size_divisor": null,
+  "temporal_patch_size": 2,
+  "video_processor_type": "Qwen2VLVideoProcessor"
+}
+
+- feature_extractor: WhisperFeatureExtractor {
+  "chunk_length": 300,
+  "dither": 0.0,
+  "feature_extractor_type": "WhisperFeatureExtractor",
+  "feature_size": 128,
+  "hop_length": 160,
+  "image_mean": [
+    0.48145466,
+    0.4578275,
+    0.40821073
+  ],
+  "image_processor_type": "Qwen2VLImageProcessor",
+  "image_std": [
+    0.26862954,
+    0.26130258,
+    0.27577711
+  ],
+  "max_pixels": 12845056,
+  "merge_size": 2,
+  "min_pixels": 3136,
+  "n_fft": 400,
+  "n_samples": 4800000,
+  "nb_max_frames": 30000,
+  "padding_side": "right",
+  "padding_value": 0.0,
+  "patch_size": 14,
+  "processor_class": "Qwen2_5OmniProcessor",
+  "return_attention_mask": true,
+  "sampling_rate": 16000,
+  "temporal_patch_size": 2
+}
+
+- tokenizer: Qwen2TokenizerFast(name_or_path='/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/output/lemon_omni_lora/merged', vocab_size=151643, model_max_length=32768, is_fast=True, padding_side='right', truncation_side='right', special_tokens={'eos_token': '<|im_end|>', 'pad_token': '<|endoftext|>', 'additional_special_tokens': ['<|im_start|>', '<|im_end|>', '<|AUDIO|>', '<|audio_bos|>', '<|audio_eos|>', '<|box_end|>', '<|quad_start|>', '<|quad_end|>', '<|vision_bos|>', '<|vision_eos|>', '<|vision_pad|>', '<|IMAGE|>', '<|VIDEO|>'], 'audio_bos_token': '<|audio_bos|>', 'audio_eos_token': '<|audio_eos|>', 'audio_token': '<|AUDIO|>', 'image_token': '<|IMAGE|>', 'video_token': '<|VIDEO|>', 'vision_bos_token': '<|vision_bos|>', 'vision_eos_token': '<|vision_eos|>'}, clean_up_tokenization_spaces=False, added_tokens_decoder={
+	151643: AddedToken("<|endoftext|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=True),
+	151644: AddedToken("<|im_start|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=True),
+	151645: AddedToken("<|im_end|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=True),
+	151646: AddedToken("<|AUDIO|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=True),
+	151647: AddedToken("<|audio_bos|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=True),
+	151648: AddedToken("<|audio_eos|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=True),
+	151649: AddedToken("<|box_end|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=True),
+	151650: AddedToken("<|quad_start|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=True),
+	151651: AddedToken("<|quad_end|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=True),
+	151652: AddedToken("<|vision_bos|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=True),
+	151653: AddedToken("<|vision_eos|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=True),
+	151654: AddedToken("<|vision_pad|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=True),
+	151655: AddedToken("<|IMAGE|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=True),
+	151656: AddedToken("<|VIDEO|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=True),
+	151657: AddedToken("<tool_call>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=False),
+	151658: AddedToken("</tool_call>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=False),
+	151659: AddedToken("<|fim_prefix|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=False),
+	151660: AddedToken("<|fim_middle|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=False),
+	151661: AddedToken("<|fim_suffix|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=False),
+	151662: AddedToken("<|fim_pad|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=False),
+	151663: AddedToken("<|repo_name|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=False),
+	151664: AddedToken("<|file_sep|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=False),
+}
+)
+
+{
+  "processor_class": "Qwen2_5OmniProcessor"
+}
+
+[WARNING|2025-10-24 14:59:46] llamafactory.data.loader:148 >> Loading dataset from disk will ignore other data arguments.
+[INFO|2025-10-24 14:59:46] llamafactory.data.loader:143 >> Loaded tokenized dataset from /home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/saves/datasets/lemon_tok_192.
+[INFO|configuration_utils.py:696] 2025-10-24 14:59:46,192 >> loading configuration file /home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/output/lemon_omni_lora/merged/config.json
+Traceback (most recent call last):
+  File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/transformers/models/auto/configuration_auto.py", line 1170, in from_pretrained
+    config_class = CONFIG_MAPPING[config_dict["model_type"]]
+                   ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/transformers/models/auto/configuration_auto.py", line 872, in __getitem__
+    raise KeyError(key)
+KeyError: 'qwen2_5_omni_thinker'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/CORP/zhuo.zhi/miniconda3/envs/qwen2.5omniemo/bin/llamafactory-cli", line 8, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/cli.py", line 151, in main
+    COMMAND_MAP[command]()
+  File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/launcher.py", line 41, in run_exp
+    return _run_exp()  # use absolute import
+           ^^^^^^^^^^
+  File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/train/tuner.py", line 110, in run_exp
+    _training_function(config={"args": args, "callbacks": callbacks})
+  File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/train/tuner.py", line 72, in _training_function
+    run_sft(model_args, data_args, training_args, finetuning_args, generating_args, callbacks)
+  File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/train/sft/workflow.py", line 52, in run_sft
+    model = load_model(tokenizer, model_args, finetuning_args, training_args.do_train)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/model/loader.py", line 140, in load_model
+    config = load_config(model_args)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/model/loader.py", line 128, in load_config
+    return AutoConfig.from_pretrained(model_args.model_name_or_path, **init_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/transformers/models/auto/configuration_auto.py", line 1172, in from_pretrained
+    raise ValueError(
+ValueError: The checkpoint you are trying to load has model type `qwen2_5_omni_thinker` but Transformers does not recognize this architecture. This could be because of an issue with the checkpoint, or because your version of Transformers is out of date.
+
+You can update Transformers with the command `pip install --upgrade transformers`. If this does not work, and the checkpoint is very new, then there may not be a release version that supports this model yet. In this case, you can get the most up-to-date code by installing Transformers from source with the command `pip install git+https://github.com/huggingface/transformers.git`

@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "transformers"  # 保持包名一致，确保 import transformers 正常
+version = "4.52.2"     # 建议与你当前环境中 __init__.py 的 __version__ 保持一致
+description = "Local patched Transformers for this project"
+readme = { text = "Local patched Transformers bundled with the project", content-type = "text/plain" }
+requires-python = ">=3.8"
+
+# 依赖仍由你的 environment.yml / requirements.txt 管理，这里就不列出依赖了
+# dynamic = ["dependencies"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+exclude = ["tests*", "examples*", "docs*", "templates*", "scripts*"]
+
+[tool.setuptools.package-data]
+# 尽量把常见的运行期资源文件一起打包（模型 config、词表等）
+"transformers" = ["**/*.json", "**/*.txt", "**/*.md", "**/*.pyi", "py.typed"]

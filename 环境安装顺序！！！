@@ -1,0 +1,6 @@
+1. 
+
+
+
+删掉flash-attn和llamafactory
+装完再 pip install flash-attn==2.6.3

@@ -1,0 +1,5 @@
+built_train_10.jsonl 是train中的前10个样本用于测试我们的训练拟合效果
+
+built_training.jsonl 是完整的训练集
+built_test.jsonl 是划分好的测试集
+built_test_for_debug.jsonl 是用于debug只有一个样本的数据集

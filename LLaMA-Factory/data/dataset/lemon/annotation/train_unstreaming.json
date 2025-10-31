@@ -1,0 +1,16 @@
+[
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "<video><audio>what is the emotion of the person in the video?"
+      },
+      {
+        "role": "assistant",
+        "content": "He looks happy."
+      }
+    ],
+    "videos": ["dataset/lemon/video/xx.mp4"],
+    "audios": ["dataset/lemon/audio/xx.wav"]
+  }
+]

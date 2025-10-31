@@ -1,0 +1,153 @@
+[INFO|2025-10-26 15:56:09] llamafactory.cli:143 >> Initializing 4 distributed tasks at: 127.0.0.1:52115
+W1026 15:56:14.753000 3466391 site-packages/torch/distributed/run.py:766] 
+W1026 15:56:14.753000 3466391 site-packages/torch/distributed/run.py:766] *****************************************
+W1026 15:56:14.753000 3466391 site-packages/torch/distributed/run.py:766] Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. 
+W1026 15:56:14.753000 3466391 site-packages/torch/distributed/run.py:766] *****************************************
+[WARNING|2025-10-26 15:56:20] llamafactory.extras.misc:154 >> Version checking has been disabled, may lead to unexpected behaviors.
+[2025-10-26 15:56:21,321] [INFO] [real_accelerator.py:254:get_accelerator] Setting ds_accelerator to cuda (auto detect)
+[2025-10-26 15:56:21,350] [INFO] [real_accelerator.py:254:get_accelerator] Setting ds_accelerator to cuda (auto detect)
+[2025-10-26 15:56:21,673] [INFO] [real_accelerator.py:254:get_accelerator] Setting ds_accelerator to cuda (auto detect)
+[2025-10-26 15:56:22,061] [INFO] [real_accelerator.py:254:get_accelerator] Setting ds_accelerator to cuda (auto detect)
+[2025-10-26 15:56:22,959] [INFO] [logging.py:107:log_dist] [Rank -1] [TorchCheckpointEngine] Initialized with serialization = False
+[2025-10-26 15:56:23,024] [INFO] [logging.py:107:log_dist] [Rank -1] [TorchCheckpointEngine] Initialized with serialization = False
+[2025-10-26 15:56:23,285] [INFO] [logging.py:107:log_dist] [Rank -1] [TorchCheckpointEngine] Initialized with serialization = False
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/launcher.py", line 57, in <module>
+[rank0]:     run_exp()
+[rank0]:   File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/launcher.py", line 41, in run_exp
+[rank0]:     return _run_exp()  # use absolute import
+[rank0]:            ^^^^^^^^^^
+[rank0]:   File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/train/tuner.py", line 110, in run_exp
+[rank0]:     _training_function(config={"args": args, "callbacks": callbacks})
+[rank0]:   File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/train/tuner.py", line 55, in _training_function
+[rank0]:     model_args, data_args, training_args, finetuning_args, generating_args = get_train_args(args)
+[rank0]:                                                                              ^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/hparams/parser.py", line 219, in get_train_args
+[rank0]:     model_args, data_args, training_args, finetuning_args, generating_args = _parse_train_args(args)
+[rank0]:                                                                              ^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/hparams/parser.py", line 197, in _parse_train_args
+[rank0]:     return _parse_args(parser, args, allow_extra_keys=allow_extra_keys)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/hparams/parser.py", line 79, in _parse_args
+[rank0]:     return parser.parse_dict(args, allow_extra_keys=allow_extra_keys)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/transformers/hf_argparser.py", line 396, in parse_dict
+[rank0]:     raise ValueError(f"Some keys are not used by the HfArgumentParser: {sorted(unused_keys)}")
+[rank0]: ValueError: Some keys are not used by the HfArgumentParser: ['max_eval_samples']
+[rank1]: Traceback (most recent call last):
+[rank1]:   File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/launcher.py", line 57, in <module>
+[rank1]:     run_exp()
+[rank1]:   File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/launcher.py", line 41, in run_exp
+[rank1]:     return _run_exp()  # use absolute import
+[rank1]:            ^^^^^^^^^^
+[rank1]:   File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/train/tuner.py", line 110, in run_exp
+[rank1]:     _training_function(config={"args": args, "callbacks": callbacks})
+[rank1]:   File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/train/tuner.py", line 55, in _training_function
+[rank1]:     model_args, data_args, training_args, finetuning_args, generating_args = get_train_args(args)
+[rank1]:                                                                              ^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/hparams/parser.py", line 219, in get_train_args
+[rank1]:     model_args, data_args, training_args, finetuning_args, generating_args = _parse_train_args(args)
+[rank1]:                                                                              ^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/hparams/parser.py", line 197, in _parse_train_args
+[rank1]:     return _parse_args(parser, args, allow_extra_keys=allow_extra_keys)
+[rank1]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/hparams/parser.py", line 79, in _parse_args
+[rank1]:     return parser.parse_dict(args, allow_extra_keys=allow_extra_keys)
+[rank1]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/transformers/hf_argparser.py", line 396, in parse_dict
+[rank1]:     raise ValueError(f"Some keys are not used by the HfArgumentParser: {sorted(unused_keys)}")
+[rank1]: ValueError: Some keys are not used by the HfArgumentParser: ['max_eval_samples']
+[rank3]: Traceback (most recent call last):
+[rank3]:   File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/launcher.py", line 57, in <module>
+[rank3]:     run_exp()
+[rank3]:   File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/launcher.py", line 41, in run_exp
+[rank3]:     return _run_exp()  # use absolute import
+[rank3]:            ^^^^^^^^^^
+[rank3]:   File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/train/tuner.py", line 110, in run_exp
+[rank3]:     _training_function(config={"args": args, "callbacks": callbacks})
+[rank3]:   File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/train/tuner.py", line 55, in _training_function
+[rank3]:     model_args, data_args, training_args, finetuning_args, generating_args = get_train_args(args)
+[rank3]:                                                                              ^^^^^^^^^^^^^^^^^^^^
+[rank3]:   File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/hparams/parser.py", line 219, in get_train_args
+[rank3]:     model_args, data_args, training_args, finetuning_args, generating_args = _parse_train_args(args)
+[rank3]:                                                                              ^^^^^^^^^^^^^^^^^^^^^^^
+[rank3]:   File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/hparams/parser.py", line 197, in _parse_train_args
+[rank3]:     return _parse_args(parser, args, allow_extra_keys=allow_extra_keys)
+[rank3]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank3]:   File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/hparams/parser.py", line 79, in _parse_args
+[rank3]:     return parser.parse_dict(args, allow_extra_keys=allow_extra_keys)
+[rank3]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank3]:   File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/transformers/hf_argparser.py", line 396, in parse_dict
+[rank3]:     raise ValueError(f"Some keys are not used by the HfArgumentParser: {sorted(unused_keys)}")
+[rank3]: ValueError: Some keys are not used by the HfArgumentParser: ['max_eval_samples']
+[2025-10-26 15:56:24,054] [INFO] [logging.py:107:log_dist] [Rank -1] [TorchCheckpointEngine] Initialized with serialization = False
+[rank2]: Traceback (most recent call last):
+[rank2]:   File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/launcher.py", line 57, in <module>
+[rank2]:     run_exp()
+[rank2]:   File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/launcher.py", line 41, in run_exp
+[rank2]:     return _run_exp()  # use absolute import
+[rank2]:            ^^^^^^^^^^
+[rank2]:   File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/train/tuner.py", line 110, in run_exp
+[rank2]:     _training_function(config={"args": args, "callbacks": callbacks})
+[rank2]:   File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/train/tuner.py", line 55, in _training_function
+[rank2]:     model_args, data_args, training_args, finetuning_args, generating_args = get_train_args(args)
+[rank2]:                                                                              ^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/hparams/parser.py", line 219, in get_train_args
+[rank2]:     model_args, data_args, training_args, finetuning_args, generating_args = _parse_train_args(args)
+[rank2]:                                                                              ^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/hparams/parser.py", line 197, in _parse_train_args
+[rank2]:     return _parse_args(parser, args, allow_extra_keys=allow_extra_keys)
+[rank2]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/hparams/parser.py", line 79, in _parse_args
+[rank2]:     return parser.parse_dict(args, allow_extra_keys=allow_extra_keys)
+[rank2]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/transformers/hf_argparser.py", line 396, in parse_dict
+[rank2]:     raise ValueError(f"Some keys are not used by the HfArgumentParser: {sorted(unused_keys)}")
+[rank2]: ValueError: Some keys are not used by the HfArgumentParser: ['max_eval_samples']
+[rank0]:[W1026 15:56:30.401236625 ProcessGroupNCCL.cpp:1476] Warning: WARNING: destroy_process_group() was not called before program exit, which can leak resources. For more info, please see https://pytorch.org/docs/stable/distributed.html#shutdown (function operator())
+W1026 15:56:31.200000 3466391 site-packages/torch/distributed/elastic/multiprocessing/api.py:900] Sending process 3466524 closing signal SIGTERM
+W1026 15:56:31.201000 3466391 site-packages/torch/distributed/elastic/multiprocessing/api.py:900] Sending process 3466526 closing signal SIGTERM
+W1026 15:56:31.202000 3466391 site-packages/torch/distributed/elastic/multiprocessing/api.py:900] Sending process 3466527 closing signal SIGTERM
+E1026 15:56:31.481000 3466391 site-packages/torch/distributed/elastic/multiprocessing/api.py:874] failed (exitcode: 1) local_rank: 1 (pid: 3466525) of binary: /home/CORP/zhuo.zhi/miniconda3/envs/qwen2.5omniemo/bin/python
+Traceback (most recent call last):
+  File "/home/CORP/zhuo.zhi/miniconda3/envs/qwen2.5omniemo/bin/torchrun", line 8, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/home/CORP/zhuo.zhi/miniconda3/envs/qwen2.5omniemo/lib/python3.12/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 355, in wrapper
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+  File "/home/CORP/zhuo.zhi/miniconda3/envs/qwen2.5omniemo/lib/python3.12/site-packages/torch/distributed/run.py", line 892, in main
+    run(args)
+  File "/home/CORP/zhuo.zhi/miniconda3/envs/qwen2.5omniemo/lib/python3.12/site-packages/torch/distributed/run.py", line 883, in run
+    elastic_launch(
+  File "/home/CORP/zhuo.zhi/miniconda3/envs/qwen2.5omniemo/lib/python3.12/site-packages/torch/distributed/launcher/api.py", line 139, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/CORP/zhuo.zhi/miniconda3/envs/qwen2.5omniemo/lib/python3.12/site-packages/torch/distributed/launcher/api.py", line 270, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+============================================================
+/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/launcher.py FAILED
+------------------------------------------------------------
+Failures:
+  <NO_OTHER_FAILURES>
+------------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2025-10-26_15:56:31
+  host      : sruk-sbb48
+  rank      : 1 (local_rank: 1)
+  exitcode  : 1 (pid: 3466525)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+============================================================
+Traceback (most recent call last):
+  File "/home/CORP/zhuo.zhi/miniconda3/envs/qwen2.5omniemo/bin/llamafactory-cli", line 8, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/cli.py", line 130, in main
+    process = subprocess.run(
+              ^^^^^^^^^^^^^^^
+  File "/home/CORP/zhuo.zhi/miniconda3/envs/qwen2.5omniemo/lib/python3.12/subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['torchrun', '--nnodes', '1', '--node_rank', '0', '--nproc_per_node', '4', '--master_addr', '127.0.0.1', '--master_port', '52115', '/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/launcher.py', '/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/qwen2_5_full_sft_test.yaml']' returned non-zero exit status 1.

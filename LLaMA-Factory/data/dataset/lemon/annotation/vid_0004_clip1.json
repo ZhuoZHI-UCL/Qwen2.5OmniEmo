@@ -1,0 +1,62 @@
+[
+  {
+    "timestamp": 0.031,
+    "emotion": "annoyed",
+    "detailed_reasoning": "The video begins with the speaker saying 'Okay,' in a sharp, clipped tone. Her facial expression is tense, with a slight frown, and her initial hand gesture is dismissively open, indicating she is starting a frustrated or confrontational statement.",
+    "summary_reasoning": "Sharp tone, tense face, dismissive gesture."
+  },
+  {
+    "timestamp": 2.554,
+    "emotion": "sarcastic",
+    "detailed_reasoning": "The speaker's tone shifts to become pointed and mocking as she says, 'So you just tell him anything he wants to know.' Her eyes widen in a challenging way, and her hand gestures become more emphatic and dismissive, suggesting she is sarcastically outlining an action she disapproves of.",
+    "summary_reasoning": "Mocking tone, challenging expression, emphatic gestures."
+  },
+  {
+    "timestamp": 7.781,
+    "emotion": "resigned",
+    "detailed_reasoning": "There is a noticeable drop in the speaker's energy. Her voice becomes softer and her pace slows on the word 'Honestly.' Her body language becomes less confrontational as she seems to give up on the argument, conveying a sense of weary resignation.",
+    "summary_reasoning": "Lower energy, softer voice, slower pace."
+  },
+  {
+    "timestamp": 10.665,
+    "emotion": "frustrated",
+    "detailed_reasoning": "Her energy and volume rise again as she says, 'because people are going to think whatever they think.' Her gestures become broad and agitated, and her speech quickens, indicating her growing frustration with a situation she feels is out of her control.",
+    "summary_reasoning": "Louder volume, faster pace, agitated gestures."
+  },
+  {
+    "timestamp": 17.214,
+    "emotion": "regretful",
+    "detailed_reasoning": "The speaker's tone softens and becomes more introspective as she talks about listening to her instincts. Her gaze drops, and her pace slows, conveying a sense of regret and self-reproach for past decisions, particularly when she mentions what was 'against my instinct.'",
+    "summary_reasoning": "Soft tone, downward gaze, self-critical words."
+  },
+  {
+    "timestamp": 26.447,
+    "emotion": "defeated",
+    "detailed_reasoning": "After admitting her mistake, her tone becomes flat and definitive on the words 'But I did.' Her facial expression is one of grim acceptance, and the finality in her voice when she says 'It's too late' signals a feeling of defeat and hopelessness.",
+    "summary_reasoning": "Flat tone, grim expression, words of finality."
+  },
+  {
+    "timestamp": 29.328,
+    "emotion": "overwhelmed",
+    "detailed_reasoning": "The speaker's pace accelerates dramatically, and her pitch rises as she begins listing a series of negative consequences. Her eyes widen, and her hands fly up to her head in a classic gesture of being overwhelmed and stressed by the cascading problems.",
+    "summary_reasoning": "Rapid speech, high pitch, hands on head."
+  },
+  {
+    "timestamp": 35.429,
+    "emotion": "panicked",
+    "detailed_reasoning": "Her speech becomes even faster and more breathless as she describes how 'Dennis Ziegler thinks I'm like easy pickings.' Her expression is wide-eyed and frantic, and her movements are jerky, indicating a peak state of panic and distress.",
+    "summary_reasoning": "Breathless speech, wide eyes, frantic movements."
+  },
+  {
+    "timestamp": 40.868,
+    "emotion": "detached",
+    "detailed_reasoning": "Following her panicked outburst, her energy suddenly shifts down. Her voice becomes quieter and more measured as she says, 'I don't actually know him. Or you.' This verbal distancing is a coping mechanism, creating an emotional detachment from the situation that is causing her stress.",
+    "summary_reasoning": "Quieter voice, measured tone, verbal distancing."
+  },
+  {
+    "timestamp": 46.387,
+    "emotion": "numb",
+    "detailed_reasoning": "In the final line, 'really doesn't matter,' her voice is devoid of the strong emotion present earlier. Her tone is flat and hollow, and her facial expression is blank. This suggests she is emotionally exhausted and has reached a state of numbness or apathy.",
+    "summary_reasoning": "Hollow tone, blank expression, emotional exhaustion."
+  }
+]

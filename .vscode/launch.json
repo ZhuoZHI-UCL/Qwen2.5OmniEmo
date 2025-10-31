@@ -1,0 +1,25 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug LLaMAFactory Train",
+            "type": "python",
+            "request": "launch",
+            "module": "llamafactory.cli",
+            "args": [
+                "train",
+                "qwen2_5_full_sft_resume.yaml"
+            ],
+            "env": {
+                "CUDA_VISIBLE_DEVICES": "0",
+                // "FORCE_TORCHRUN": "1",
+                "DISABLE_VERSION_CHECK" : "1",
+            },
+            "cwd": "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory",  
+            "console": "integratedTerminal",
+            "subProcess": true,
+            "justMyCode": false
+        }
+    ]
+}
+//这个记得保存为 launch_resume.json

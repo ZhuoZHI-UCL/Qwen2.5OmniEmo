@@ -1,0 +1,585 @@
+[INFO|2025-10-26 16:15:01] llamafactory.cli:143 >> Initializing 4 distributed tasks at: 127.0.0.1:40709
+W1026 16:15:06.910000 3472420 site-packages/torch/distributed/run.py:766] 
+W1026 16:15:06.910000 3472420 site-packages/torch/distributed/run.py:766] *****************************************
+W1026 16:15:06.910000 3472420 site-packages/torch/distributed/run.py:766] Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. 
+W1026 16:15:06.910000 3472420 site-packages/torch/distributed/run.py:766] *****************************************
+[WARNING|2025-10-26 16:15:12] llamafactory.extras.misc:154 >> Version checking has been disabled, may lead to unexpected behaviors.
+[2025-10-26 16:15:12,946] [INFO] [real_accelerator.py:254:get_accelerator] Setting ds_accelerator to cuda (auto detect)
+[2025-10-26 16:15:13,171] [INFO] [real_accelerator.py:254:get_accelerator] Setting ds_accelerator to cuda (auto detect)
+[2025-10-26 16:15:13,386] [INFO] [real_accelerator.py:254:get_accelerator] Setting ds_accelerator to cuda (auto detect)
+[2025-10-26 16:15:14,225] [INFO] [real_accelerator.py:254:get_accelerator] Setting ds_accelerator to cuda (auto detect)
+[2025-10-26 16:15:14,674] [INFO] [logging.py:107:log_dist] [Rank -1] [TorchCheckpointEngine] Initialized with serialization = False
+[2025-10-26 16:15:14,817] [INFO] [logging.py:107:log_dist] [Rank -1] [TorchCheckpointEngine] Initialized with serialization = False
+[INFO|2025-10-26 16:15:15] llamafactory.hparams.parser:143 >> Set `ddp_find_unused_parameters` to False in DDP training since LoRA is enabled.
+[INFO|2025-10-26 16:15:15] llamafactory.hparams.parser:423 >> Process rank: 0, world size: 4, device: cuda:0, distributed training: True, compute dtype: torch.bfloat16
+[INFO|tokenization_utils_base.py:2021] 2025-10-26 16:15:15,080 >> loading file vocab.json
+[INFO|tokenization_utils_base.py:2021] 2025-10-26 16:15:15,080 >> loading file merges.txt
+[INFO|tokenization_utils_base.py:2021] 2025-10-26 16:15:15,080 >> loading file tokenizer.json
+[INFO|tokenization_utils_base.py:2021] 2025-10-26 16:15:15,080 >> loading file added_tokens.json
+[INFO|tokenization_utils_base.py:2021] 2025-10-26 16:15:15,080 >> loading file special_tokens_map.json
+[INFO|tokenization_utils_base.py:2021] 2025-10-26 16:15:15,080 >> loading file tokenizer_config.json
+[INFO|tokenization_utils_base.py:2021] 2025-10-26 16:15:15,080 >> loading file chat_template.jinja
+[2025-10-26 16:15:15,275] [INFO] [logging.py:107:log_dist] [Rank -1] [TorchCheckpointEngine] Initialized with serialization = False
+[INFO|tokenization_utils_base.py:2299] 2025-10-26 16:15:15,412 >> Special tokens have been added in the vocabulary, make sure the associated word embeddings are fine-tuned or trained.
+[INFO|image_processing_base.py:378] 2025-10-26 16:15:15,413 >> loading configuration file /home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/output/lemon_omni_lora/merged/preprocessor_config.json
+[INFO|image_processing_base.py:378] 2025-10-26 16:15:15,416 >> loading configuration file /home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/output/lemon_omni_lora/merged/preprocessor_config.json
+[INFO|image_processing_base.py:433] 2025-10-26 16:15:15,416 >> Image processor Qwen2VLImageProcessor {
+  "chunk_length": 300,
+  "dither": 0.0,
+  "do_convert_rgb": true,
+  "do_normalize": true,
+  "do_rescale": true,
+  "do_resize": true,
+  "feature_size": 128,
+  "hop_length": 160,
+  "image_mean": [
+    0.48145466,
+    0.4578275,
+    0.40821073
+  ],
+  "image_processor_type": "Qwen2VLImageProcessor",
+  "image_std": [
+    0.26862954,
+    0.26130258,
+    0.27577711
+  ],
+  "max_pixels": 12845056,
+  "merge_size": 2,
+  "min_pixels": 3136,
+  "n_fft": 400,
+  "n_samples": 4800000,
+  "nb_max_frames": 30000,
+  "padding_side": "right",
+  "padding_value": 0.0,
+  "patch_size": 14,
+  "processor_class": "Qwen2_5OmniProcessor",
+  "resample": 3,
+  "rescale_factor": 0.00392156862745098,
+  "return_attention_mask": true,
+  "sampling_rate": 16000,
+  "size": {
+    "longest_edge": 12845056,
+    "shortest_edge": 3136
+  },
+  "temporal_patch_size": 2
+}
+
+[INFO|video_processing_utils.py:627] 2025-10-26 16:15:15,417 >> loading configuration file /home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/output/lemon_omni_lora/merged/video_preprocessor_config.json
+[INFO|video_processing_utils.py:683] 2025-10-26 16:15:15,417 >> Video processor Qwen2VLVideoProcessor {
+  "_valid_kwargs_names": [
+    "do_convert_rgb",
+    "do_resize",
+    "size",
+    "size_divisor",
+    "default_to_square",
+    "resample",
+    "do_rescale",
+    "rescale_factor",
+    "do_normalize",
+    "image_mean",
+    "image_std",
+    "do_pad",
+    "do_center_crop",
+    "crop_size",
+    "data_format",
+    "input_data_format",
+    "device",
+    "min_pixels",
+    "max_pixels",
+    "patch_size",
+    "temporal_patch_size",
+    "merge_size"
+  ],
+  "chunk_length": 300,
+  "crop_size": null,
+  "data_format": "channels_first",
+  "default_to_square": true,
+  "device": null,
+  "dither": 0.0,
+  "do_center_crop": null,
+  "do_convert_rgb": true,
+  "do_normalize": true,
+  "do_pad": null,
+  "do_rescale": true,
+  "do_resize": true,
+  "feature_extractor_type": "WhisperFeatureExtractor",
+  "feature_size": 128,
+  "hop_length": 160,
+  "image_mean": [
+    0.48145466,
+    0.4578275,
+    0.40821073
+  ],
+  "image_processor_type": "Qwen2VLImageProcessor",
+  "image_std": [
+    0.26862954,
+    0.26130258,
+    0.27577711
+  ],
+  "input_data_format": null,
+  "max_pixels": 12845056,
+  "merge_size": 2,
+  "min_pixels": 3136,
+  "model_valid_processing_keys": [
+    "do_convert_rgb",
+    "do_resize",
+    "size",
+    "size_divisor",
+    "default_to_square",
+    "resample",
+    "do_rescale",
+    "rescale_factor",
+    "do_normalize",
+    "image_mean",
+    "image_std",
+    "do_pad",
+    "do_center_crop",
+    "crop_size",
+    "data_format",
+    "input_data_format",
+    "device",
+    "min_pixels",
+    "max_pixels",
+    "patch_size",
+    "temporal_patch_size",
+    "merge_size"
+  ],
+  "n_fft": 400,
+  "n_samples": 4800000,
+  "nb_max_frames": 30000,
+  "padding_side": "right",
+  "padding_value": 0.0,
+  "patch_size": 14,
+  "processor_class": "Qwen2_5OmniProcessor",
+  "resample": 3,
+  "rescale_factor": 0.00392156862745098,
+  "return_attention_mask": true,
+  "sampling_rate": 16000,
+  "size": {
+    "longest_edge": 12845056,
+    "shortest_edge": 3136
+  },
+  "size_divisor": null,
+  "temporal_patch_size": 2,
+  "video_processor_type": "Qwen2VLVideoProcessor"
+}
+
+[INFO|feature_extraction_utils.py:548] 2025-10-26 16:15:15,421 >> loading configuration file /home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/output/lemon_omni_lora/merged/preprocessor_config.json
+[INFO|feature_extraction_utils.py:597] 2025-10-26 16:15:15,421 >> Feature extractor WhisperFeatureExtractor {
+  "chunk_length": 300,
+  "dither": 0.0,
+  "feature_extractor_type": "WhisperFeatureExtractor",
+  "feature_size": 128,
+  "hop_length": 160,
+  "image_mean": [
+    0.48145466,
+    0.4578275,
+    0.40821073
+  ],
+  "image_processor_type": "Qwen2VLImageProcessor",
+  "image_std": [
+    0.26862954,
+    0.26130258,
+    0.27577711
+  ],
+  "max_pixels": 12845056,
+  "merge_size": 2,
+  "min_pixels": 3136,
+  "n_fft": 400,
+  "n_samples": 4800000,
+  "nb_max_frames": 30000,
+  "padding_side": "right",
+  "padding_value": 0.0,
+  "patch_size": 14,
+  "processor_class": "Qwen2_5OmniProcessor",
+  "return_attention_mask": true,
+  "sampling_rate": 16000,
+  "temporal_patch_size": 2
+}
+
+[INFO|tokenization_utils_base.py:2021] 2025-10-26 16:15:15,422 >> loading file vocab.json
+[INFO|tokenization_utils_base.py:2021] 2025-10-26 16:15:15,422 >> loading file merges.txt
+[INFO|tokenization_utils_base.py:2021] 2025-10-26 16:15:15,422 >> loading file tokenizer.json
+[INFO|tokenization_utils_base.py:2021] 2025-10-26 16:15:15,422 >> loading file added_tokens.json
+[INFO|tokenization_utils_base.py:2021] 2025-10-26 16:15:15,422 >> loading file special_tokens_map.json
+[INFO|tokenization_utils_base.py:2021] 2025-10-26 16:15:15,422 >> loading file tokenizer_config.json
+[INFO|tokenization_utils_base.py:2021] 2025-10-26 16:15:15,422 >> loading file chat_template.jinja
+[INFO|2025-10-26 16:15:15] llamafactory.hparams.parser:423 >> Process rank: 3, world size: 4, device: cuda:3, distributed training: True, compute dtype: torch.bfloat16
+[INFO|tokenization_utils_base.py:2299] 2025-10-26 16:15:15,774 >> Special tokens have been added in the vocabulary, make sure the associated word embeddings are fine-tuned or trained.
+[INFO|2025-10-26 16:15:15] llamafactory.hparams.parser:423 >> Process rank: 1, world size: 4, device: cuda:1, distributed training: True, compute dtype: torch.bfloat16
+[2025-10-26 16:15:15,932] [INFO] [logging.py:107:log_dist] [Rank -1] [TorchCheckpointEngine] Initialized with serialization = False
+[INFO|processing_utils.py:990] 2025-10-26 16:15:16,188 >> Processor Qwen2_5OmniProcessor:
+- image_processor: Qwen2VLImageProcessor {
+  "chunk_length": 300,
+  "dither": 0.0,
+  "do_convert_rgb": true,
+  "do_normalize": true,
+  "do_rescale": true,
+  "do_resize": true,
+  "feature_size": 128,
+  "hop_length": 160,
+  "image_mean": [
+    0.48145466,
+    0.4578275,
+    0.40821073
+  ],
+  "image_processor_type": "Qwen2VLImageProcessor",
+  "image_std": [
+    0.26862954,
+    0.26130258,
+    0.27577711
+  ],
+  "max_pixels": 12845056,
+  "merge_size": 2,
+  "min_pixels": 3136,
+  "n_fft": 400,
+  "n_samples": 4800000,
+  "nb_max_frames": 30000,
+  "padding_side": "right",
+  "padding_value": 0.0,
+  "patch_size": 14,
+  "processor_class": "Qwen2_5OmniProcessor",
+  "resample": 3,
+  "rescale_factor": 0.00392156862745098,
+  "return_attention_mask": true,
+  "sampling_rate": 16000,
+  "size": {
+    "longest_edge": 12845056,
+    "shortest_edge": 3136
+  },
+  "temporal_patch_size": 2
+}
+
+- video_processor: Qwen2VLVideoProcessor {
+  "_valid_kwargs_names": [
+    "do_convert_rgb",
+    "do_resize",
+    "size",
+    "size_divisor",
+    "default_to_square",
+    "resample",
+    "do_rescale",
+    "rescale_factor",
+    "do_normalize",
+    "image_mean",
+    "image_std",
+    "do_pad",
+    "do_center_crop",
+    "crop_size",
+    "data_format",
+    "input_data_format",
+    "device",
+    "min_pixels",
+    "max_pixels",
+    "patch_size",
+    "temporal_patch_size",
+    "merge_size"
+  ],
+  "chunk_length": 300,
+  "crop_size": null,
+  "data_format": "channels_first",
+  "default_to_square": true,
+  "device": null,
+  "dither": 0.0,
+  "do_center_crop": null,
+  "do_convert_rgb": true,
+  "do_normalize": true,
+  "do_pad": null,
+  "do_rescale": true,
+  "do_resize": true,
+  "feature_extractor_type": "WhisperFeatureExtractor",
+  "feature_size": 128,
+  "hop_length": 160,
+  "image_mean": [
+    0.48145466,
+    0.4578275,
+    0.40821073
+  ],
+  "image_processor_type": "Qwen2VLImageProcessor",
+  "image_std": [
+    0.26862954,
+    0.26130258,
+    0.27577711
+  ],
+  "input_data_format": null,
+  "max_pixels": 12845056,
+  "merge_size": 2,
+  "min_pixels": 3136,
+  "model_valid_processing_keys": [
+    "do_convert_rgb",
+    "do_resize",
+    "size",
+    "size_divisor",
+    "default_to_square",
+    "resample",
+    "do_rescale",
+    "rescale_factor",
+    "do_normalize",
+    "image_mean",
+    "image_std",
+    "do_pad",
+    "do_center_crop",
+    "crop_size",
+    "data_format",
+    "input_data_format",
+    "device",
+    "min_pixels",
+    "max_pixels",
+    "patch_size",
+    "temporal_patch_size",
+    "merge_size"
+  ],
+  "n_fft": 400,
+  "n_samples": 4800000,
+  "nb_max_frames": 30000,
+  "padding_side": "right",
+  "padding_value": 0.0,
+  "patch_size": 14,
+  "processor_class": "Qwen2_5OmniProcessor",
+  "resample": 3,
+  "rescale_factor": 0.00392156862745098,
+  "return_attention_mask": true,
+  "sampling_rate": 16000,
+  "size": {
+    "longest_edge": 12845056,
+    "shortest_edge": 3136
+  },
+  "size_divisor": null,
+  "temporal_patch_size": 2,
+  "video_processor_type": "Qwen2VLVideoProcessor"
+}
+
+- feature_extractor: WhisperFeatureExtractor {
+  "chunk_length": 300,
+  "dither": 0.0,
+  "feature_extractor_type": "WhisperFeatureExtractor",
+  "feature_size": 128,
+  "hop_length": 160,
+  "image_mean": [
+    0.48145466,
+    0.4578275,
+    0.40821073
+  ],
+  "image_processor_type": "Qwen2VLImageProcessor",
+  "image_std": [
+    0.26862954,
+    0.26130258,
+    0.27577711
+  ],
+  "max_pixels": 12845056,
+  "merge_size": 2,
+  "min_pixels": 3136,
+  "n_fft": 400,
+  "n_samples": 4800000,
+  "nb_max_frames": 30000,
+  "padding_side": "right",
+  "padding_value": 0.0,
+  "patch_size": 14,
+  "processor_class": "Qwen2_5OmniProcessor",
+  "return_attention_mask": true,
+  "sampling_rate": 16000,
+  "temporal_patch_size": 2
+}
+
+- tokenizer: Qwen2TokenizerFast(name_or_path='/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/output/lemon_omni_lora/merged', vocab_size=151643, model_max_length=32768, is_fast=True, padding_side='right', truncation_side='right', special_tokens={'eos_token': '<|im_end|>', 'pad_token': '<|endoftext|>', 'additional_special_tokens': ['<|im_start|>', '<|im_end|>', '<|AUDIO|>', '<|audio_bos|>', '<|audio_eos|>', '<|box_end|>', '<|quad_start|>', '<|quad_end|>', '<|vision_bos|>', '<|vision_eos|>', '<|vision_pad|>', '<|IMAGE|>', '<|VIDEO|>'], 'audio_bos_token': '<|audio_bos|>', 'audio_eos_token': '<|audio_eos|>', 'audio_token': '<|AUDIO|>', 'image_token': '<|IMAGE|>', 'video_token': '<|VIDEO|>', 'vision_bos_token': '<|vision_bos|>', 'vision_eos_token': '<|vision_eos|>'}, clean_up_tokenization_spaces=False, added_tokens_decoder={
+	151643: AddedToken("<|endoftext|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=True),
+	151644: AddedToken("<|im_start|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=True),
+	151645: AddedToken("<|im_end|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=True),
+	151646: AddedToken("<|AUDIO|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=True),
+	151647: AddedToken("<|audio_bos|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=True),
+	151648: AddedToken("<|audio_eos|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=True),
+	151649: AddedToken("<|box_end|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=True),
+	151650: AddedToken("<|quad_start|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=True),
+	151651: AddedToken("<|quad_end|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=True),
+	151652: AddedToken("<|vision_bos|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=True),
+	151653: AddedToken("<|vision_eos|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=True),
+	151654: AddedToken("<|vision_pad|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=True),
+	151655: AddedToken("<|IMAGE|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=True),
+	151656: AddedToken("<|VIDEO|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=True),
+	151657: AddedToken("<tool_call>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=False),
+	151658: AddedToken("</tool_call>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=False),
+	151659: AddedToken("<|fim_prefix|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=False),
+	151660: AddedToken("<|fim_middle|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=False),
+	151661: AddedToken("<|fim_suffix|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=False),
+	151662: AddedToken("<|fim_pad|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=False),
+	151663: AddedToken("<|repo_name|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=False),
+	151664: AddedToken("<|file_sep|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=False),
+}
+)
+
+{
+  "processor_class": "Qwen2_5OmniProcessor"
+}
+
+[rank3]:[W1026 16:15:16.131859571 ProcessGroupNCCL.cpp:4715] [PG ID 0 PG GUID 0 Rank 3]  using GPU 3 as device used by this process is currently unknown. This can potentially cause a hang if this rank to GPU mapping is incorrect. You can pecify device_id in init_process_group() to force use of a particular device.
+[rank0]:[W1026 16:15:16.218620410 ProcessGroupNCCL.cpp:4715] [PG ID 0 PG GUID 0 Rank 0]  using GPU 0 as device used by this process is currently unknown. This can potentially cause a hang if this rank to GPU mapping is incorrect. You can pecify device_id in init_process_group() to force use of a particular device.
+[INFO|2025-10-26 16:15:16] llamafactory.hparams.parser:423 >> Process rank: 2, world size: 4, device: cuda:2, distributed training: True, compute dtype: torch.bfloat16
+[rank1]:[W1026 16:15:16.617004344 ProcessGroupNCCL.cpp:4715] [PG ID 0 PG GUID 0 Rank 1]  using GPU 1 as device used by this process is currently unknown. This can potentially cause a hang if this rank to GPU mapping is incorrect. You can pecify device_id in init_process_group() to force use of a particular device.
+[rank2]:[W1026 16:15:17.388955513 ProcessGroupNCCL.cpp:4715] [PG ID 0 PG GUID 0 Rank 2]  using GPU 2 as device used by this process is currently unknown. This can potentially cause a hang if this rank to GPU mapping is incorrect. You can pecify device_id in init_process_group() to force use of a particular device.
+[rank1]: Traceback (most recent call last):
+[rank1]:   File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/data/parser.py", line 109, in get_dataset_list
+[rank1]:     with open(config_path) as f:
+[rank1]:          ^^^^^^^^^^^^^^^^^
+[rank1]: FileNotFoundError: [Errno 2] No such file or directory: 'data/dataset_info.json'
+
+[rank1]: During handling of the above exception, another exception occurred:
+
+[rank1]: Traceback (most recent call last):
+[rank1]:   File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/launcher.py", line 57, in <module>
+[rank1]:     run_exp()
+[rank1]:   File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/launcher.py", line 41, in run_exp
+[rank1]:     return _run_exp()  # use absolute import
+[rank1]:            ^^^^^^^^^^
+[rank1]:   File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/train/tuner.py", line 110, in run_exp
+[rank1]:     _training_function(config={"args": args, "callbacks": callbacks})
+[rank1]:   File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/train/tuner.py", line 72, in _training_function
+[rank1]:     run_sft(model_args, data_args, training_args, finetuning_args, generating_args, callbacks)
+[rank1]:   File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/train/sft/workflow.py", line 51, in run_sft
+[rank1]:     dataset_module = get_dataset(template, model_args, data_args, training_args, stage="sft", **tokenizer_module)
+[rank1]:                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/data/loader.py", line 312, in get_dataset
+[rank1]:     eval_dataset = _get_merged_dataset(
+[rank1]:                    ^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/data/loader.py", line 179, in _get_merged_dataset
+[rank1]:     for dataset_name, dataset_attr in zip(dataset_names, get_dataset_list(dataset_names, data_args.dataset_dir)):
+[rank1]:                                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/data/parser.py", line 113, in get_dataset_list
+[rank1]:     raise ValueError(f"Cannot open {config_path} due to {str(err)}.")
+[rank1]: ValueError: Cannot open data/dataset_info.json due to [Errno 2] No such file or directory: 'data/dataset_info.json'.
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/data/parser.py", line 109, in get_dataset_list
+[rank0]:     with open(config_path) as f:
+[rank0]:          ^^^^^^^^^^^^^^^^^
+[rank0]: FileNotFoundError: [Errno 2] No such file or directory: 'data/dataset_info.json'
+
+[rank0]: During handling of the above exception, another exception occurred:
+
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/launcher.py", line 57, in <module>
+[rank0]:     run_exp()
+[rank0]:   File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/launcher.py", line 41, in run_exp
+[rank0]:     return _run_exp()  # use absolute import
+[rank0]:            ^^^^^^^^^^
+[rank0]:   File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/train/tuner.py", line 110, in run_exp
+[rank0]:     _training_function(config={"args": args, "callbacks": callbacks})
+[rank0]:   File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/train/tuner.py", line 72, in _training_function
+[rank0]:     run_sft(model_args, data_args, training_args, finetuning_args, generating_args, callbacks)
+[rank0]:   File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/train/sft/workflow.py", line 51, in run_sft
+[rank0]:     dataset_module = get_dataset(template, model_args, data_args, training_args, stage="sft", **tokenizer_module)
+[rank0]:                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/data/loader.py", line 312, in get_dataset
+[rank0]:     eval_dataset = _get_merged_dataset(
+[rank0]:                    ^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/data/loader.py", line 179, in _get_merged_dataset
+[rank0]:     for dataset_name, dataset_attr in zip(dataset_names, get_dataset_list(dataset_names, data_args.dataset_dir)):
+[rank0]:                                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/data/parser.py", line 113, in get_dataset_list
+[rank0]:     raise ValueError(f"Cannot open {config_path} due to {str(err)}.")
+[rank0]: ValueError: Cannot open data/dataset_info.json due to [Errno 2] No such file or directory: 'data/dataset_info.json'.
+[rank2]: Traceback (most recent call last):
+[rank2]:   File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/data/parser.py", line 109, in get_dataset_list
+[rank2]:     with open(config_path) as f:
+[rank2]:          ^^^^^^^^^^^^^^^^^
+[rank2]: FileNotFoundError: [Errno 2] No such file or directory: 'data/dataset_info.json'
+
+[rank2]: During handling of the above exception, another exception occurred:
+
+[rank2]: Traceback (most recent call last):
+[rank2]:   File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/launcher.py", line 57, in <module>
+[rank2]:     run_exp()
+[rank2]:   File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/launcher.py", line 41, in run_exp
+[rank2]:     return _run_exp()  # use absolute import
+[rank2]:            ^^^^^^^^^^
+[rank2]:   File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/train/tuner.py", line 110, in run_exp
+[rank2]:     _training_function(config={"args": args, "callbacks": callbacks})
+[rank2]:   File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/train/tuner.py", line 72, in _training_function
+[rank2]:     run_sft(model_args, data_args, training_args, finetuning_args, generating_args, callbacks)
+[rank2]:   File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/train/sft/workflow.py", line 51, in run_sft
+[rank2]:     dataset_module = get_dataset(template, model_args, data_args, training_args, stage="sft", **tokenizer_module)
+[rank2]:                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/data/loader.py", line 312, in get_dataset
+[rank2]:     eval_dataset = _get_merged_dataset(
+[rank2]:                    ^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/data/loader.py", line 179, in _get_merged_dataset
+[rank2]:     for dataset_name, dataset_attr in zip(dataset_names, get_dataset_list(dataset_names, data_args.dataset_dir)):
+[rank2]:                                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/data/parser.py", line 113, in get_dataset_list
+[rank2]:     raise ValueError(f"Cannot open {config_path} due to {str(err)}.")
+[rank2]: ValueError: Cannot open data/dataset_info.json due to [Errno 2] No such file or directory: 'data/dataset_info.json'.
+[rank3]: Traceback (most recent call last):
+[rank3]:   File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/data/parser.py", line 109, in get_dataset_list
+[rank3]:     with open(config_path) as f:
+[rank3]:          ^^^^^^^^^^^^^^^^^
+[rank3]: FileNotFoundError: [Errno 2] No such file or directory: 'data/dataset_info.json'
+
+[rank3]: During handling of the above exception, another exception occurred:
+
+[rank3]: Traceback (most recent call last):
+[rank3]:   File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/launcher.py", line 57, in <module>
+[rank3]:     run_exp()
+[rank3]:   File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/launcher.py", line 41, in run_exp
+[rank3]:     return _run_exp()  # use absolute import
+[rank3]:            ^^^^^^^^^^
+[rank3]:   File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/train/tuner.py", line 110, in run_exp
+[rank3]:     _training_function(config={"args": args, "callbacks": callbacks})
+[rank3]:   File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/train/tuner.py", line 72, in _training_function
+[rank3]:     run_sft(model_args, data_args, training_args, finetuning_args, generating_args, callbacks)
+[rank3]:   File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/train/sft/workflow.py", line 51, in run_sft
+[rank3]:     dataset_module = get_dataset(template, model_args, data_args, training_args, stage="sft", **tokenizer_module)
+[rank3]:                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank3]:   File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/data/loader.py", line 312, in get_dataset
+[rank3]:     eval_dataset = _get_merged_dataset(
+[rank3]:                    ^^^^^^^^^^^^^^^^^^^^
+[rank3]:   File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/data/loader.py", line 179, in _get_merged_dataset
+[rank3]:     for dataset_name, dataset_attr in zip(dataset_names, get_dataset_list(dataset_names, data_args.dataset_dir)):
+[rank3]:                                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank3]:   File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/data/parser.py", line 113, in get_dataset_list
+[rank3]:     raise ValueError(f"Cannot open {config_path} due to {str(err)}.")
+[rank3]: ValueError: Cannot open data/dataset_info.json due to [Errno 2] No such file or directory: 'data/dataset_info.json'.
+[rank0]:[W1026 16:15:21.568841399 ProcessGroupNCCL.cpp:1476] Warning: WARNING: destroy_process_group() was not called before program exit, which can leak resources. For more info, please see https://pytorch.org/docs/stable/distributed.html#shutdown (function operator())
+W1026 16:15:24.371000 3472420 site-packages/torch/distributed/elastic/multiprocessing/api.py:900] Sending process 3472554 closing signal SIGTERM
+W1026 16:15:24.373000 3472420 site-packages/torch/distributed/elastic/multiprocessing/api.py:900] Sending process 3472555 closing signal SIGTERM
+W1026 16:15:24.374000 3472420 site-packages/torch/distributed/elastic/multiprocessing/api.py:900] Sending process 3472556 closing signal SIGTERM
+E1026 16:15:24.689000 3472420 site-packages/torch/distributed/elastic/multiprocessing/api.py:874] failed (exitcode: 1) local_rank: 0 (pid: 3472553) of binary: /home/CORP/zhuo.zhi/miniconda3/envs/qwen2.5omniemo/bin/python
+Traceback (most recent call last):
+  File "/home/CORP/zhuo.zhi/miniconda3/envs/qwen2.5omniemo/bin/torchrun", line 8, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/home/CORP/zhuo.zhi/miniconda3/envs/qwen2.5omniemo/lib/python3.12/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 355, in wrapper
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+  File "/home/CORP/zhuo.zhi/miniconda3/envs/qwen2.5omniemo/lib/python3.12/site-packages/torch/distributed/run.py", line 892, in main
+    run(args)
+  File "/home/CORP/zhuo.zhi/miniconda3/envs/qwen2.5omniemo/lib/python3.12/site-packages/torch/distributed/run.py", line 883, in run
+    elastic_launch(
+  File "/home/CORP/zhuo.zhi/miniconda3/envs/qwen2.5omniemo/lib/python3.12/site-packages/torch/distributed/launcher/api.py", line 139, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/CORP/zhuo.zhi/miniconda3/envs/qwen2.5omniemo/lib/python3.12/site-packages/torch/distributed/launcher/api.py", line 270, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+============================================================
+/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/launcher.py FAILED
+------------------------------------------------------------
+Failures:
+  <NO_OTHER_FAILURES>
+------------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2025-10-26_16:15:24
+  host      : sruk-sbb48
+  rank      : 0 (local_rank: 0)
+  exitcode  : 1 (pid: 3472553)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+============================================================
+Traceback (most recent call last):
+  File "/home/CORP/zhuo.zhi/miniconda3/envs/qwen2.5omniemo/bin/llamafactory-cli", line 8, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/cli.py", line 130, in main
+    process = subprocess.run(
+              ^^^^^^^^^^^^^^^
+  File "/home/CORP/zhuo.zhi/miniconda3/envs/qwen2.5omniemo/lib/python3.12/subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['torchrun', '--nnodes', '1', '--node_rank', '0', '--nproc_per_node', '4', '--master_addr', '127.0.0.1', '--master_port', '40709', '/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/src/llamafactory/launcher.py', '/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/qwen2_5_full_sft_test.yaml']' returned non-zero exit status 1.

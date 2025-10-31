@@ -1,0 +1,61 @@
+# === model ===
+model_name_or_path: "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/output/lemon_omni_lora/merged"
+trust_remote_code: false
+use_audio_in_video: true
+video_fps: 5
+video_maxlen: 300
+video_max_pixels: 36864
+tokenized_path: "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/saves/datasets/lemon_tok_192_10samples"
+# 和训练期尽量一致的内核/精度配置
+# 如果你在训练时配置里有别的 attention 实现，按训练改
+
+# === method ===
+stage: sft
+finetuning_type: lora
+template: qwen2_omni
+lora_rank: 16
+lora_alpha: 32
+lora_dropout: 0.1
+freeze_vision_tower: true
+# === dataset ===
+# dataset: lemon
+eval_dataset: lemon
+cutoff_len: 8192                   # 保持和训练一致
+
+overwrite_cache: true
+preprocessing_num_workers: 8
+streaming: false
+dataloader_drop_last: true
+
+# === output ===
+output_dir: "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/preds/lemon_train_all"
+logging_steps: 1
+save_steps: 0
+save_total_limit: 1
+plot_loss: false
+overwrite_output_dir: true
+report_to: []                     # 推理别连 wandb，省资源
+# === predict / eval ===
+do_train: false
+do_eval: false
+do_predict: true
+predict_with_generate: true
+per_device_eval_batch_size: 1
+max_new_tokens: 8192                # 够用；越大越占显存
+do_sample: False
+temperature: 1.0
+# top_p: 1.0
+# top_k: 0
+num_beams: 1
+# repetition_penalty: 1.0
+
+# 关键：生成阶段关闭 KV cache 可大幅降显存（会更慢，但稳）
+use_cache: true
+
+# === runtime ===
+bf16: true
+tf32: true
+dataloader_pin_memory: false
+gradient_checkpointing: true       # 推理阶段也开，部分实现会在前向节省激活
+# deepspeed: "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/ds_zero2_bf16.json"  # 和训练同款
+seed: 42
