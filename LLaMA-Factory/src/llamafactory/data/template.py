@@ -621,7 +621,7 @@ def get_template_and_fix_tokenizer(tokenizer: "PreTrainedTokenizer", data_args: 
     template.fix_jinja_template(tokenizer)
     return template
 
-
+'''
 register_template(
     name="alpaca",
     format_user=StringFormatter(slots=["### Instruction:\n{{content}}\n\n### Response:\n"]),
@@ -1845,7 +1845,7 @@ register_template(
     replace_eos=True,
     mm_plugin=get_mm_plugin(name="qwen2_audio", audio_token="<|AUDIO|>"),
 )
-
+'''
 
 # copied from qwen template
 register_template(
@@ -1873,7 +1873,7 @@ register_template(
     ),
 )
 
-
+'''
 register_template(
     name="qwen3_omni",
     format_user=StringFormatter(slots=["<|im_start|>user\n{{content}}<|im_end|>\n<|im_start|>assistant\n"]),
@@ -1909,7 +1909,7 @@ register_template(
         name="qwen2_omni", image_token="<|image_pad|>", video_token="<|video_pad|>", audio_token="<|audio_pad|>"
     ),
 )
-
+'''
 
 # copied from qwen template
 register_template(
@@ -1928,7 +1928,7 @@ register_template(
     mm_plugin=get_mm_plugin(name="qwen2_vl", image_token="<|image_pad|>", video_token="<|video_pad|>"),
 )
 
-
+'''
 # copied from qwen template
 register_template(
     name="qwen3_vl",
@@ -2200,3 +2200,4 @@ register_template(
     format_user=StringFormatter(slots=["<human>:{{content}}\n<bot>:"]),
     format_assistant=StringFormatter(slots=["{{content}}\n"]),
 )
+'''

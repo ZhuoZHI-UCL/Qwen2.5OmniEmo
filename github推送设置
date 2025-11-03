@@ -1,2 +1,2 @@
 git push origin main      三星   zhuo.zhi CNM19970337!
-git push github main      自己   ZhuoZHI-UCL token见微信
+git push github main      自己   ZhuoZHI-UCL 密钥见微信  这个好像有问题，sbb48上给屏蔽了，我们现在使用sbb36来先给三星的拉下来再给推到自己的git上
