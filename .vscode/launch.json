@@ -8,8 +8,8 @@
             "module": "llamafactory.cli",
             "args": [
                 "train",
-                // "qwen2_5_full_sft_resume.yaml"
-                "qwen2_5_full_sft.yaml"
+                "qwen2_5_full_sft_resume.yaml"
+                // "qwen2_5_full_sft.yaml"
             ],
             "env": {
                 "CUDA_VISIBLE_DEVICES": "0",

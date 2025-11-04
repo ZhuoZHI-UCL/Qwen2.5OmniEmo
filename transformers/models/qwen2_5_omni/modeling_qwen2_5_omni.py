@@ -2472,6 +2472,8 @@ class Qwen2_5OmniThinkerForConditionalGeneration(Qwen2_5OmniPreTrainedModelForCo
             raise ValueError("length of audio_features should match audio_output_lengths")
 
         return audio_features
+    
+
 
     @auto_docstring
     def forward(
@@ -2565,11 +2567,144 @@ class Qwen2_5OmniThinkerForConditionalGeneration(Qwen2_5OmniPreTrainedModelForCo
         ```"""
         
         #下面是测试input_ids的原始值是什么
-        texts = self.tokenizer.batch_decode(input_ids, skip_special_tokens=False)
-        from pprint import pprint
-        pprint(texts, width=200)
+        # from pprint import pprint
+        # texts = self.tokenizer.batch_decode(input_ids, skip_special_tokens=False)
+        # pprint(texts, width=200)
+        # print(labels.cpu().tolist())
+        '''
+        ##############################################################################下面都是debug
+        print("="*80)
+        print("LABEL BOUNDARY ANALYSIS")
+        print("="*80)
+        
+        # Convert to lists for easier handling
+        input_list = input_ids.tolist() if torch.is_tensor(input_ids) else input_ids
+        input_list = input_list[0]
+        label_list = labels.tolist() if torch.is_tensor(labels) else labels
+        label_list = label_list[0]
+        # Find all transitions
+        transitions = []
+        prev_was_ignore = (label_list[0] == -100)
+        
+        for i in range(1, len(label_list)):
+            curr_is_ignore = (label_list[i] == -100)
+            
+            if prev_was_ignore and not curr_is_ignore:
+                # Transition from -100 to real label
+                transitions.append(('start', i))
+            elif not prev_was_ignore and curr_is_ignore:
+                # Transition from real label to -100
+                transitions.append(('end', i-1))
+            
+            prev_was_ignore = curr_is_ignore
+        
+        # Print each segment
+        print(f"\nFound {len([t for t in transitions if t[0] == 'start'])} labeled segments:\n")
+        
+        for i in range(0, len(transitions), 2):
+            if i+1 >= len(transitions):
+                break
+            
+            start_type, start_pos = transitions[i]
+            end_type, end_pos = transitions[i+1]
+            
+            if start_type != 'start' or end_type != 'end':
+                continue
+            
+            print(f"Segment {i//2 + 1}:")
+            print(f"  Position: {start_pos} to {end_pos}")
+            print(f"  Length: {end_pos - start_pos + 1} tokens")
+            
+            # Show context before the segment
+            context_before_start = max(0, start_pos - 5)
+            context_before_tokens = input_list[context_before_start:start_pos]
+            context_before_text = self.tokenizer.decode(context_before_tokens, skip_special_tokens=False)
+            print(f"  Context BEFORE (last 5 tokens): {repr(context_before_text)}")
+            
+            # Show the labeled segment
+            segment_tokens = input_list[start_pos:end_pos+1]
+            segment_text = self.tokenizer.decode(segment_tokens, skip_special_tokens=False)
+            print(f"  LABELED SEGMENT: {repr(segment_text[:200])}")
+            
+            # Show context after the segment
+            context_after_end = min(len(input_list), end_pos + 6)
+            context_after_tokens = input_list[end_pos+1:context_after_end]
+            context_after_text = self.tokenizer.decode(context_after_tokens, skip_special_tokens=False)
+            print(f"  Context AFTER (next 5 tokens): {repr(context_after_text)}")
+            print()
+        # 在你的forward函数中，打印第一个非-100 label的上下文
+        if True:  # 只在第一个batch执行
+            b0 = 0
+            labels_b0 = labels[b0]
+            input_ids_b0 = input_ids[b0]
+            
+            # 找到第一个非-100的位置
+            first_label_pos = None
+            for i, label in enumerate(labels_b0):
+                if label != -100:
+                    first_label_pos = i
+                    break
+            
+            if first_label_pos is not None:
+                print(f"\n{'='*80}")
+                print(f"FIRST LABELED TOKEN ANALYSIS")
+                print(f"{'='*80}")
+                print(f"Position: {first_label_pos}")
+                
+                # 前面10个tokens
+                start = max(0, first_label_pos - 10)
+                context_ids = input_ids_b0[start:first_label_pos].tolist()
+                context_text = self.tokenizer.decode(context_ids, skip_special_tokens=False)
+                print(f"Context BEFORE (10 tokens):")
+                print(f"  IDs: {context_ids}")
+                print(f"  Text: {repr(context_text)}")
+                
+                # 第一个labeled token
+                first_label = labels_b0[first_label_pos].item()
+                first_input = input_ids_b0[first_label_pos].item()
+                first_token_text = self.tokenizer.decode([first_input], skip_special_tokens=False)
+                print(f"\nFIRST LABELED TOKEN:")
+                print(f"  Input ID: {first_input}")
+                print(f"  Label ID: {first_label}")
+                print(f"  Token text: {repr(first_token_text)}")
+                print(f"  Are they same? {first_input == first_label}")
+                
+                # 后面5个tokens
+                next_ids = input_ids_b0[first_label_pos:first_label_pos+5].tolist()
+                next_labels = labels_b0[first_label_pos:first_label_pos+5].tolist()
+                next_text = self.tokenizer.decode(next_ids, skip_special_tokens=False)
+                print(f"\nNEXT 5 TOKENS:")
+                print(f"  Input IDs: {next_ids}")
+                print(f"  Labels: {next_labels}")
+                print(f"  Text: {repr(next_text)}")
+                print(f"{'='*80}\n")
+        
+        
+        
+        # 在训练代码中添加
+        print("\n" + "="*80)
+        print("INPUT_IDS SEQUENCE ANALYSIS (around first comma)")
+        print("="*80)
 
+        # Position 419 是第一个逗号的label位置
+        comma_pos = 419
+        start = comma_pos - 5
+        end = comma_pos + 6
 
+        for i in range(start, end):
+            inp_id = input_ids[0][i].item()
+            lbl_id = labels[0][i].item()
+            inp_text = self.tokenizer.decode([inp_id], skip_special_tokens=False)
+            lbl_text = self.tokenizer.decode([lbl_id], skip_special_tokens=False) if lbl_id != -100 else "-100"
+            
+            marker = " <-- COMMA LABEL" if i == comma_pos else ""
+            print(f"Pos {i}: input={repr(inp_text):30s} label={repr(lbl_text):30s}{marker}")
+        ##############################################################################上面都是debug
+        '''
+    # ===== 在函数最开始保存原始input_ids =====
+        if self.training and labels is not None:
+            _debug_original_input_ids = input_ids.clone() if input_ids is not None else None
+        # ==========================================
 
         output_attentions = output_attentions if output_attentions is not None else self.config.output_attentions
         output_hidden_states = (
@@ -2800,6 +2935,17 @@ class Qwen2_5OmniThinkerForConditionalGeneration(Qwen2_5OmniPreTrainedModelForCo
 
         loss = None
         if labels is not None:
+            # ===== Debug: 保存原始labels =====
+            if self.training:
+                _debug_original_labels = labels.clone()
+            # =================================
+            
+            # ============ 关键修复: Shift labels ============
+            shifted_labels = labels.clone()
+            shifted_labels[:, :-1] = labels[:, 1:]
+            shifted_labels[:, -1] = -100
+            labels = shifted_labels
+            # ============ End of fix ============
 
             B, T, V = logits.shape
 
@@ -2885,7 +3031,7 @@ class Qwen2_5OmniThinkerForConditionalGeneration(Qwen2_5OmniPreTrainedModelForCo
                     # 输出到控制台或 wandb，可二选一
                     if is_rank0:
                         print("\n=== Model Teacher-Forcing Check ===")
-                        print(f"Pred:  {pred_text}")
+                        print(f"Pred:  {pred_text}\n")
                         print(f"Label: {label_text}\n")
 
                         # 或者记录到 wandb
@@ -2894,6 +3040,52 @@ class Qwen2_5OmniThinkerForConditionalGeneration(Qwen2_5OmniPreTrainedModelForCo
                             "inspect/pred_text": wandb.Html(f"<pre>{pred_text}</pre>"),
                             "inspect/label_text": wandb.Html(f"<pre>{label_text}</pre>"),
                         })
+                        
+                         # ===== 验证shift =====
+                        print("="*100)
+                        print("LABEL SHIFT VERIFICATION")
+                        print("="*100)
+                        
+                        b0 = 0
+                        first_valid = None
+                        for i in range(labels.shape[1]):
+                            if labels[b0][i] != -100:
+                                first_valid = i
+                                break
+                        
+                        if first_valid is not None and first_valid > 0:
+                            print(f"\nFirst labeled position (after shift): {first_valid}")
+                            
+                            # 验证shift的正确性：
+                            # shifted_labels[i] should equal original_labels[i+1]
+                            if first_valid < _debug_original_labels.shape[1]:
+                                orig_next = _debug_original_labels[b0][first_valid+1].item() if first_valid+1 < _debug_original_labels.shape[1] else -100
+                                shift_curr = labels[b0][first_valid].item()
+                                
+                                orig_next_tok = self.tokenizer.decode([orig_next], skip_special_tokens=False) if orig_next != -100 else "-100"
+                                shift_curr_tok = self.tokenizer.decode([shift_curr], skip_special_tokens=False)
+                                
+                                print(f"original_labels[{first_valid+1}] = {orig_next:6d} ({repr(orig_next_tok)})")
+                                print(f"shifted_labels[{first_valid}]   = {shift_curr:6d} ({repr(shift_curr_tok)})")
+                                print(f"Are they EQUAL? {orig_next == shift_curr}")
+                                print(f">>> Expected: TRUE ✓" if orig_next == shift_curr else ">>> ERROR: FALSE ✗")
+                                
+                                # 额外验证：第一个label应该对应原始labels的第二个位置
+                                if first_valid == 0 or _debug_original_labels[b0][first_valid] == -100:
+                                    # 找到original_labels的第一个非-100
+                                    orig_first_valid = None
+                                    for i in range(_debug_original_labels.shape[1]):
+                                        if _debug_original_labels[b0][i] != -100:
+                                            orig_first_valid = i
+                                            break
+                                    
+                                    if orig_first_valid is not None and orig_first_valid + 1 < _debug_original_labels.shape[1]:
+                                        print(f"\nAdditional check:")
+                                        print(f"original_labels first valid pos: {orig_first_valid}")
+                                        print(f"shifted_labels first valid pos: {first_valid}")
+                                        print(f"Difference should be -1: {first_valid - orig_first_valid}")
+                        
+                        print("="*100 + "\n")
 
 
             except Exception:

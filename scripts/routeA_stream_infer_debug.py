@@ -1,319 +1,415 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Simulate chunked streaming inference for Qwen2.5-Omni EMO."""
+"""
+Offline inference script for emotion recognition model.
+Processes video+audio in chunks and detects emotion changes.
+"""
 
 import argparse
 import json
-import os
+import math
 import re
-import shutil
 import subprocess
-import sys
-import tempfile
-import time
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple
+from typing import List, Dict, Tuple
 
+import numpy as np
 import torch
-from transformers import AutoModelForCausalLM, AutoProcessor
-
-os.environ.setdefault("TOKENIZERS_PARALLELISM", "false")
+from transformers import AutoProcessor, AutoModelForCausalLM
 
 
-REPO_ROOT = Path(__file__).resolve().parents[1]
-LFACTORY_SRC = str(REPO_ROOT / "LLaMA-Factory" / "src")
-if LFACTORY_SRC not in sys.path:
-    sys.path.insert(0, LFACTORY_SRC)
-
-from llamafactory.data.mm_plugin import routeA_prepare  # noqa: E402
-
-
-JSON_OBJ_RE = re.compile(
-    r"\{[^{}]*\"emotion\"\s*:\s*\"[^\"]+\"[^{}]*\"summary_reasoning\"\s*:\s*\"[^\"]+\"[^{}]*\}"
-)
-
-
-def now() -> str:
-    return time.strftime("%Y-%m-%d %H:%M:%S")
-
-
-def read_prompt(path: str) -> str:
-    with open(Path(path), "r", encoding="utf-8") as f:
-        return f.read()
-
-
-def ffmpeg_extract_wav(video_path: str, out_wav: str, sr: int = 16000) -> Optional[str]:
+def extract_audio_from_video(video_path: Path, audio_path: Path) -> None:
+    """Extract audio from video using ffmpeg."""
+    audio_path.parent.mkdir(parents=True, exist_ok=True)
     cmd = [
-        "ffmpeg",
-        "-y",
-        "-i",
-        video_path,
-        "-vn",
-        "-ac",
-        "1",
-        "-ar",
-        str(sr),
-        "-f",
-        "wav",
-        out_wav,
+        "ffmpeg", "-y", "-i", str(video_path),
+        "-vn", "-ac", "1", "-ar", "16000",
+        "-sample_fmt", "s16", str(audio_path)
     ]
-    try:
-        subprocess.run(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
-    except Exception:
+    subprocess.run(cmd, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    print(f"✓ Extracted audio to: {audio_path}")
+
+
+def get_video_duration(video_path: Path) -> float:
+    """Get video duration in seconds."""
+    cmd = [
+        "ffprobe", "-v", "error",
+        "-show_entries", "format=duration",
+        "-of", "default=noprint_wrappers=1:nokey=1",
+        str(video_path)
+    ]
+    result = subprocess.run(cmd, capture_output=True, text=True, check=True)
+    return float(result.stdout.strip())
+
+
+def load_and_process_media(
+    video_path: str, 
+    audio_path: str, 
+    processor
+) -> Tuple[Dict, Dict, List[int]]:
+    """Load and process video and audio."""
+    import av
+    import librosa
+    
+    print("Loading video...")
+    container = av.open(video_path, "r")
+    video_stream = next(s for s in container.streams if s.type == "video")
+    
+    video_fps = 5.0
+    video_maxlen = 300
+    total_frames = video_stream.frames
+    
+    if total_frames > 0:
+        duration = float(video_stream.duration * video_stream.time_base)
+        sample_frames = max(1, math.floor(duration * video_fps))
+        sample_frames = min(total_frames, video_maxlen, sample_frames)
+        sample_indices = np.linspace(0, total_frames - 1, sample_frames).astype(np.int32)
+    else:
+        sample_indices = np.arange(video_maxlen)
+    
+    container.seek(0)
+    frames = []
+    for frame_idx, frame in enumerate(container.decode(video_stream)):
+        if frame_idx in sample_indices:
+            img = frame.to_image()
+            if img.mode != "RGB":
+                img = img.convert("RGB")
+            frames.append(img)
+    container.close()
+    
+    if len(frames) % 2 != 0:
+        frames.append(frames[-1])
+    
+    print(f"✓ Loaded {len(frames)} video frames")
+    
+    print("Loading audio...")
+    audio, sr = librosa.load(audio_path, sr=16000)
+    print(f"✓ Loaded audio: {len(audio)/sr:.2f}s")
+    
+    # Process video
+    video_inputs = processor.video_processor(
+        images=None, videos=[frames],
+        min_pixels=36864, max_pixels=36864
+    )
+    
+    temporal_patch_size = processor.video_processor.temporal_patch_size
+    video_second_per_grid = [temporal_patch_size / video_fps]
+    video_inputs["video_second_per_grid"] = torch.tensor(video_second_per_grid)
+    
+    # Process audio
+    audio_inputs = processor.feature_extractor(
+        audio, sampling_rate=16000,
+        padding="max_length",
+        return_attention_mask=True,
+        return_tensors="pt"
+    )
+    audio_inputs["feature_attention_mask"] = audio_inputs.pop("attention_mask")
+    input_lengths = (audio_inputs["feature_attention_mask"].sum(-1).numpy() - 1) // 2 + 1
+    audio_lengths = [(input_lengths[0] - 2) // 2 + 1]
+    
+    return video_inputs, audio_inputs, audio_lengths
+
+
+def get_chunk_tokens(
+    video_inputs: Dict,
+    audio_inputs: Dict,
+    audio_lengths: List[int],
+    processor,
+    chunk_idx: int
+) -> str:
+    """Get multimodal tokens for a specific chunk."""
+    T, H, W = video_inputs["video_grid_thw"][0].tolist()
+    video_spg = video_inputs["video_second_per_grid"][0].item()
+    audio_length = audio_lengths[0]
+    
+    position_id_per_seconds = 25
+    seconds_per_chunk = 0.4
+    t_ntoken_per_chunk = int(position_id_per_seconds * seconds_per_chunk)
+    merge_size = processor.video_processor.merge_size
+    v_tokens_per_grid = (H // merge_size) * (W // merge_size)
+    
+    # Build indices
+    video_t_index = torch.arange(T) * video_spg * position_id_per_seconds
+    video_t_index = video_t_index.long().view(-1, 1).expand(-1, v_tokens_per_grid).reshape(-1)
+    audio_t_index = torch.arange(audio_length).long()
+    
+    # Get chunks
+    video_chunks = get_chunked_index(video_t_index, t_ntoken_per_chunk)
+    audio_chunks = get_chunked_index(audio_t_index, t_ntoken_per_chunk)
+    
+    if chunk_idx >= len(video_chunks) or chunk_idx >= len(audio_chunks):
         return None
-    return out_wav if Path(out_wav).exists() and Path(out_wav).stat().st_size > 0 else None
+    
+    # Get this chunk's tokens
+    sv, ev = video_chunks[chunk_idx]
+    nv = ev - sv
+    sa, ea = audio_chunks[chunk_idx]
+    na = ea - sa
+    
+    tokens = []
+    if nv > 0:
+        tokens.extend([
+            processor.tokenizer.vision_bos_token,
+            processor.tokenizer.video_token * int(nv),
+            processor.tokenizer.vision_eos_token
+        ])
+    if na > 0:
+        tokens.extend([
+            processor.tokenizer.audio_bos_token,
+            processor.tokenizer.audio_token * int(na),
+            processor.tokenizer.audio_eos_token
+        ])
+    
+    return "".join(tokens)
 
 
-def ffprobe_best_duration(path: Path, ffprobe_bin: str = "ffprobe") -> Optional[float]:
-    def _run(args: List[str]) -> Optional[str]:
-        try:
-            res = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True)
-        except Exception:
-            return None
-        out = res.stdout.strip()
-        return out if out else None
-
-    durations: List[float] = []
-
-    fmt = _run(
-        [ffprobe_bin, "-v", "error", "-show_entries", "format=duration", "-of", "default=noprint_wrappers=1:nokey=1", str(path)]
-    )
-    if fmt:
-        try:
-            val = float(fmt)
-            if val > 0:
-                durations.append(val)
-        except Exception:
-            pass
-
-    vdur = _run(
-        [
-            ffprobe_bin,
-            "-v",
-            "error",
-            "-select_streams",
-            "v:0",
-            "-show_entries",
-            "stream=duration",
-            "-of",
-            "default=noprint_wrappers=1:nokey=1",
-            str(path),
-        ]
-    )
-    if vdur:
-        try:
-            val = float(vdur)
-            if val > 0:
-                durations.append(val)
-        except Exception:
-            pass
-
-    adur = _run(
-        [
-            ffprobe_bin,
-            "-v",
-            "error",
-            "-select_streams",
-            "a:0",
-            "-show_entries",
-            "stream=duration",
-            "-of",
-            "default=noprint_wrappers=1:nokey=1",
-            str(path),
-        ]
-    )
-    if adur:
-        try:
-            val = float(adur)
-            if val > 0:
-                durations.append(val)
-        except Exception:
-            pass
-
-    if not durations:
-        return None
-
-    return round(min(durations), 3)
-
-
-def build_timeline(duration: float, step: float) -> List[Tuple[float, float]]:
-    t = 0.0
-    chunks: List[Tuple[float, float]] = []
-    while t < duration - 1e-9:
-        t_next = min(duration, round(t + step, 3))
-        chunks.append((round(t, 3), t_next))
-        t = t_next
+def get_chunked_index(token_indices: torch.Tensor, tokens_per_chunk: int) -> List[Tuple[int, int]]:
+    """Split token indices into chunks."""
+    token_indices = token_indices.numpy()
+    chunks = []
+    i, start_idx = 0, 0
+    current_chunk = 1
+    
+    while i < len(token_indices):
+        if token_indices[i] >= current_chunk * tokens_per_chunk:
+            if i > start_idx:
+                chunks.append((int(start_idx), int(i)))
+            start_idx = i
+            current_chunk += 1
+        i += 1
+    
+    if start_idx < len(token_indices):
+        chunks.append((int(start_idx), int(len(token_indices))))
+    
     return chunks
 
 
-def extract_json_objects(text: str) -> List[Dict[str, str]]:
-    objs = []
-    for m in JSON_OBJ_RE.finditer(text):
-        try:
-            obj = json.loads(m.group(0))
-        except Exception:
-            continue
-        if "emotion" in obj and "summary_reasoning" in obj:
-            objs.append({"emotion": obj["emotion"], "summary_reasoning": obj["summary_reasoning"]})
-    return objs
-
-
-def cleanup_generation(gen_text: str, stop_strings: List[str]) -> str:
-    text = gen_text.replace("<|im_end|>", "").replace("<|endoftext|>", "")
-    for stop in stop_strings:
-        pos = text.find(stop)
-        if pos >= 0:
-            text = text[:pos]
-    return text.strip()
-
-
-def take_chunk_token(gen_text: str) -> Tuple[str, Dict[str, Optional[List[Dict[str, str]]]]]:
-    stripped = gen_text.lstrip()
-    if not stripped:
-        return "", {"type": "empty", "events": None}
-
-    json_match = JSON_OBJ_RE.match(stripped)
+def parse_emotion_json(text: str) -> Dict:
+    """Parse emotion JSON from generated text."""
+    # Try to find JSON pattern
+    json_match = re.search(r'\{[^}]*"emotion"[^}]*\}', text)
     if json_match:
-        commit = json_match.group(0)
-        return commit, {"type": "json", "events": extract_json_objects(commit)}
-
-    if stripped[0] == ",":
-        return ",", {"type": "silence", "events": None}
-
-    return stripped, {"type": "raw", "events": None}
-
-
-def routeA_prepare_safe(processor, messages, videos, audio_path):
-    audios = [audio_path] if audio_path else []
-    try:
-        return routeA_prepare(processor, messages, videos, audios, add_stream_generation_prompt=False)
-    except Exception:
-        return routeA_prepare(processor, messages, videos, audio_path, add_stream_generation_prompt=False)
+        try:
+            obj = json.loads(json_match.group())
+            if "emotion" in obj:
+                return obj
+        except:
+            pass
+    return None
 
 
-def main() -> None:
-    parser = argparse.ArgumentParser(description="Simulate chunked streaming inference for Qwen2.5-Omni EMO")
-    parser.add_argument("--model", type=str, required=True, help="Path to the merged Qwen2.5-Omni EMO model")
-    parser.add_argument("--video", type=str, required=True, help="Video file to analyse")
-    parser.add_argument("--prompt_path", type=str, required=True, help="Prompt text used during training")
-    parser.add_argument("--device", type=str, default="cuda", help="Device, e.g., cuda or cpu")
-    parser.add_argument("--max_new_tokens", type=int, default=64)
-    parser.add_argument("--dryrun_chunks", type=int, default=0, help="Limit to first N chunks (0 = all)")
+def streaming_inference(
+    model,
+    processor,
+    video_inputs: Dict,
+    audio_inputs: Dict,
+    audio_lengths: List[int],
+    user_prompt: str,
+    device: str,
+    max_chunks: int = None
+) -> List[Dict]:
+    """Run streaming inference chunk by chunk."""
+    print(f"\n{'='*80}")
+    print("STARTING INFERENCE")
+    print(f"{'='*80}\n")
+    
+    # Move to device
+    for k in ["pixel_values_videos", "video_grid_thw", "video_second_per_grid"]:
+        if k in video_inputs and isinstance(video_inputs[k], torch.Tensor):
+            video_inputs[k] = video_inputs[k].to(device)
+    for k in ["input_features", "feature_attention_mask"]:
+        if k in audio_inputs and isinstance(audio_inputs[k], torch.Tensor):
+            audio_inputs[k] = audio_inputs[k].to(device)
+    
+    # Build initial prompt
+    messages = [{"role": "user", "content": user_prompt}]
+    base_text = processor.apply_chat_template(messages, add_generation_prompt=True, tokenize=False)
+    if isinstance(base_text, list):
+        base_text = base_text[0]
+    
+    current_text = base_text
+    results = []
+    
+    # Get total chunks
+    T = video_inputs["video_grid_thw"][0][0].item()
+    total_chunks = T if max_chunks is None else min(T, max_chunks)
+    
+    print(f"Total chunks to process: {total_chunks}\n")
+    
+    comma_id = processor.tokenizer.encode(",", add_special_tokens=False)[0]
+    
+    for chunk_idx in range(total_chunks):
+        # Get tokens for this chunk
+        chunk_tokens = get_chunk_tokens(
+            video_inputs, audio_inputs, audio_lengths,
+            processor, chunk_idx
+        )
+        if not chunk_tokens:
+            break
+        
+        # Add comma before chunk (except first)
+        if chunk_idx > 0:
+            current_text += ","
+        
+        current_text += chunk_tokens
+        
+        # Tokenize
+        text_inputs = processor.tokenizer(current_text, return_tensors="pt")
+        input_ids = text_inputs["input_ids"].to(device)
+        attention_mask = text_inputs["attention_mask"].to(device)
+        
+        # Get position IDs
+        get_rope = model.get_rope_index if hasattr(model, "get_rope_index") else model.model.get_rope_index
+        position_ids, rope_deltas = get_rope(
+            input_ids=input_ids,
+            image_grid_thw=None,
+            video_grid_thw=video_inputs["video_grid_thw"],
+            attention_mask=(attention_mask >= 1).float(),
+            second_per_grids=video_inputs["video_second_per_grid"]
+        )
+        
+        # Generate
+        with torch.no_grad():
+            outputs = model.generate(
+                input_ids=input_ids,
+                attention_mask=attention_mask,
+                position_ids=position_ids,
+                rope_deltas=rope_deltas - (1 - (attention_mask >= 1).float()).sum(dim=-1).unsqueeze(-1),
+                pixel_values_videos=video_inputs["pixel_values_videos"],
+                video_grid_thw=video_inputs["video_grid_thw"],
+                input_features=audio_inputs["input_features"],
+                feature_attention_mask=audio_inputs["feature_attention_mask"],
+                max_new_tokens=150,
+                do_sample=False,
+                pad_token_id=processor.tokenizer.pad_token_id,
+                eos_token_id=processor.tokenizer.eos_token_id,
+            )
+        
+        # Decode generated part
+        generated_ids = outputs[0][input_ids.shape[1]:]
+        generated_text = processor.tokenizer.decode(generated_ids, skip_special_tokens=True)
+        
+        # Parse result
+        if len(generated_ids) == 0:
+            print(f"Chunk {chunk_idx+1}/{total_chunks}: (no generation)")
+            break
+        
+        first_token_id = generated_ids[0].item()
+        
+        # Check if it's a comma or JSON
+        emotion_obj = parse_emotion_json(generated_text)
+        
+        if emotion_obj:
+            # Emotion change detected
+            emotion = emotion_obj.get("emotion", "unknown")
+            reasoning = emotion_obj.get("summary_reasoning", "")
+            print(f"Chunk {chunk_idx+1:3d}/{total_chunks}: ✓ {emotion:12s} - {reasoning[:60]}...")
+            results.append(emotion_obj)
+            current_text += generated_text.split("}")[0] + "}"  # Add clean JSON
+        else:
+            # No change, just comma
+            print(f"Chunk {chunk_idx+1:3d}/{total_chunks}: , (no change)")
+            current_text += ","
+    
+    return results
+
+
+def main():
+    parser = argparse.ArgumentParser(description="Offline emotion recognition inference")
+    parser.add_argument("--model", required=True, help="Path to trained model")
+    parser.add_argument("--video", required=True, help="Path to video file")
+    parser.add_argument("--prompt_path", required=True, help="Path to user prompt file")
+    parser.add_argument("--output_json", default=None, help="Path to save results JSON")
+    parser.add_argument("--max_chunks", type=int, default=None, help="Max chunks to process")
+    parser.add_argument("--device", default="cuda", help="Device to use")
+    parser.add_argument("--temp_audio", default="/tmp/offline_inference_audio.wav", help="Temp audio path")
     args = parser.parse_args()
-
-    device = torch.device(args.device if torch.cuda.is_available() or args.device == "cpu" else "cpu")
-
-    print(f"[{now()}][INFO] Loading processor and model ...")
+    
+    # Load prompt
+    with open(args.prompt_path) as f:
+        user_prompt = f.read().strip()
+    
+    # Extract audio
+    audio_path = Path(args.temp_audio)
+    print(f"Extracting audio from video...")
+    extract_audio_from_video(Path(args.video), audio_path)
+    
+    # Get video info
+    duration = get_video_duration(Path(args.video))
+    print(f"Video duration: {duration:.2f}s\n")
+    
+    # Load model and processor
+    print(f"Loading model from: {args.model}")
     processor = AutoProcessor.from_pretrained(args.model, trust_remote_code=True)
     model = AutoModelForCausalLM.from_pretrained(
         args.model,
-        torch_dtype=torch.bfloat16 if device.type == "cuda" else torch.float32,
-        trust_remote_code=True,
+        torch_dtype=torch.bfloat16,
+        device_map=args.device,
+        trust_remote_code=True
     )
-    model.to(device)
     model.eval()
-
-    step_seconds = float(getattr(processor, "seconds_per_chunk", 0.4))
-
-    tmpdir = tempfile.mkdtemp(prefix="emo_stream_")
-    wav_path = ffmpeg_extract_wav(args.video, os.path.join(tmpdir, "audio.wav"))
-    if wav_path:
-        print(f"[{now()}][INFO] Audio extracted -> {wav_path}")
+    print("✓ Model loaded\n")
+    
+    # Load and process media
+    video_inputs, audio_inputs, audio_lengths = load_and_process_media(
+        args.video, str(audio_path), processor
+    )
+    
+    # Run inference
+    results = streaming_inference(
+        model, processor,
+        video_inputs, audio_inputs, audio_lengths,
+        user_prompt, args.device,
+        max_chunks=args.max_chunks
+    )
+    
+    # Print final results
+    print(f"\n{'='*80}")
+    print("FINAL RESULTS")
+    print(f"{'='*80}")
+    print(f"Total emotion changes detected: {len(results)}\n")
+    
+    if results:
+        for i, result in enumerate(results, 1):
+            emotion = result.get("emotion", "unknown")
+            reasoning = result.get("summary_reasoning", "")
+            print(f"[{i}] {emotion}: {reasoning}")
     else:
-        print(f"[{now()}][WARN] Audio extraction failed, continue without audio")
-
-    user_prompt = read_prompt(args.prompt_path)
-
-    duration = ffprobe_best_duration(Path(args.video))
-    if duration is None:
-        raise RuntimeError("Failed to measure video duration via ffprobe")
-
-    timeline = build_timeline(duration, step_seconds)
-    if args.dryrun_chunks > 0:
-        timeline = timeline[: args.dryrun_chunks]
-
-    videos = [args.video]
-    stop_strings = ["Human:", "Assistant:", "<|im_start|>", "<|im_end|>"]
-
-    assistant_text = ""
-    committed: List[Dict[str, object]] = []
-
-    for idx, (t0, t1) in enumerate(timeline, start=1):
-        window = f"[{t0:.2f}s–{t1:.2f}s]"
-        print(f"[{now()}][LOOP] chunk={idx}/{len(timeline)} window={window}")
-
-        placeholder = f"<video[{t0:.3f}:{t1:.3f}]><audio[{t0:.3f}:{t1:.3f}]>"
-        assistant_text += placeholder
-        messages = [
-            {"role": "user", "content": user_prompt},
-            {"role": "assistant", "content": assistant_text},
-        ]
-
-        text, mm_inputs, _ = routeA_prepare_safe(processor, messages, videos, wav_path)
-
-        inputs = processor(text=text, return_tensors="pt", padding=True)
-        inputs = {k: (v.to(device) if torch.is_tensor(v) else v) for k, v in inputs.items()}
-        for k, v in mm_inputs.items():
-            inputs[k] = v.to(device) if torch.is_tensor(v) else v
-        inputs["use_audio_in_video"] = getattr(processor, "use_audio_in_video", True)
-
-        with torch.no_grad():
-            outputs = model.generate(
-                **inputs,
-                max_new_tokens=args.max_new_tokens,
-                do_sample=False,
-                eos_token_id=processor.tokenizer.eos_token_id,
-                pad_token_id=processor.tokenizer.eos_token_id,
-            )
-
-        ctx = inputs["input_ids"].shape[1]
-        new_tokens = outputs[:, ctx:]
-        gen_text = processor.batch_decode(new_tokens, skip_special_tokens=False, clean_up_tokenization_spaces=False)[0]
-        cleaned = cleanup_generation(gen_text, stop_strings)
-        commit_text, meta = take_chunk_token(cleaned)
-        if not commit_text:
-            commit_text = ","
-            meta = {"type": "silence", "events": None, "note": "forced"}
-
-        assistant_text += commit_text
-
-        entry: Dict[str, object] = {
-            "start": t0,
-            "end": t1,
-            "text": commit_text,
-            "meta": meta,
-        }
-        committed.append(entry)
-
-        if meta["type"] == "json":
-            for event in meta.get("events") or []:
-                print(f"[{now()}][OUT] {window} {json.dumps(event, ensure_ascii=False)}")
-        elif meta["type"] == "silence":
-            print(f"[{now()}][OUT] {window} (silence)")
-        else:
-            print(f"[{now()}][OUT] {window} (raw) {commit_text[:200]}")
-
-    print(f"[{now()}][INFO] Streaming finished: {len(committed)} chunks")
-    summary = [c for c in committed if c["meta"]["type"] == "json"]
-    if summary:
-        print(f"[{now()}][INFO] Detected {len(summary)} emotion changes:")
-        for item in summary:
-            for ev in item["meta"].get("events") or []:
-                print(f"  - [{item['start']:.2f}s–{item['end']:.2f}s] {ev['emotion']}: {ev['summary_reasoning']}")
-    else:
-        print(f"[{now()}][INFO] No emotion changes detected")
-
-    print(f"[{now()}][INFO] Cleaning temporary files -> {tmpdir}")
-    shutil.rmtree(tmpdir, ignore_errors=True)
+        print("No emotion changes detected.")
+    
+    # Save to file if specified
+    if args.output_json:
+        output_path = Path(args.output_json)
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        with open(output_path, 'w', encoding='utf-8') as f:
+            json.dump(results, f, indent=2, ensure_ascii=False)
+        print(f"\n✓ Results saved to: {output_path}")
+    
+    # Cleanup
+    if audio_path.exists():
+        audio_path.unlink()
+    
+    print(f"\n{'='*80}")
+    print("INFERENCE COMPLETE")
+    print(f"{'='*80}\n")
 
 
 if __name__ == "__main__":
     main()
-
 '''
 CUDA_VISIBLE_DEVICES=0 \
 python /home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/scripts/routeA_stream_infer_debug.py \
   --model /home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/output/lemon_omni_lora/merged \
   --video /home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/data/dataset/lemon/video/vid_0111_clip16.mp4 \
-  --prompt_path /home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/user_prompt.txt
+  --prompt_path /home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/user_prompt.txt \
+  --step 0.4
+'''
+
+'''
+CUDA_VISIBLE_DEVICES=0 \
+python /home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/scripts/routeA_stream_infer_debug.py \
+    --model /home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/output/lemon_omni_lora_1104/merged \
+    --video /home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/LLaMA-Factory/data/dataset/lemon/video/vid_0111_clip16.mp4 \
+    --prompt_path /home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/user_prompt.txt \
+    --max_chunks 100
 '''

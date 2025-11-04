@@ -1,0 +1,2 @@
+我们发现label好像没有进行shift,于是我们准备修改并重新训练
+之前的被备份在modeling_qwen2_5_omni_backup.py 这是上一个版本的成功训练的文件

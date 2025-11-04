@@ -9,8 +9,8 @@ import shutil
 
 # ====== 配置你自己的路径 ======
 BASE = "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/hf_cache/models--Qwen--Qwen2.5-Omni-7B/snapshots/ae9e1690543ffd5c0221dc27f79834d0294cba00"
-LORA_PATH = "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/output/lemon_omni_lora/checkpoint-201"
-MERGED_DIR = "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/output/lemon_omni_lora/merged"
+LORA_PATH = "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/output/lemon_omni_lora_1104/checkpoint-201"
+MERGED_DIR = "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/output/lemon_omni_lora_1104/merged"
 
 os.environ["HF_HUB_OFFLINE"] = "1"   # 双保险：彻底禁止联网
 

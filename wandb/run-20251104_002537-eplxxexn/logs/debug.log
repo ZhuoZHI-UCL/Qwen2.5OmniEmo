@@ -1,0 +1,89 @@
+2025-11-04 00:25:37,517 INFO    MainThread:148864 [wandb_setup.py:_flush():81] Current SDK version is 0.22.2
+2025-11-04 00:25:37,518 INFO    MainThread:148864 [wandb_setup.py:_flush():81] Configure stats pid to 148864
+2025-11-04 00:25:37,518 INFO    MainThread:148864 [wandb_setup.py:_flush():81] Loading settings from /home/CORP/zhuo.zhi/.config/wandb/settings
+2025-11-04 00:25:37,518 INFO    MainThread:148864 [wandb_setup.py:_flush():81] Loading settings from /home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/wandb/settings
+2025-11-04 00:25:37,518 INFO    MainThread:148864 [wandb_setup.py:_flush():81] Loading settings from environment variables
+2025-11-04 00:25:37,518 INFO    MainThread:148864 [wandb_init.py:setup_run_log_directory():705] Logging user logs to /home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/wandb/run-20251104_002537-eplxxexn/logs/debug.log
+2025-11-04 00:25:37,518 INFO    MainThread:148864 [wandb_init.py:setup_run_log_directory():706] Logging internal logs to /home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/wandb/run-20251104_002537-eplxxexn/logs/debug-internal.log
+2025-11-04 00:25:37,518 INFO    MainThread:148864 [wandb_init.py:init():832] calling init triggers
+2025-11-04 00:25:37,518 INFO    MainThread:148864 [wandb_init.py:init():837] wandb.init called with sweep_config: {}
+config: {'_wandb': {}}
+2025-11-04 00:25:37,518 INFO    MainThread:148864 [wandb_init.py:init():880] starting backend
+2025-11-04 00:25:37,766 INFO    MainThread:148864 [wandb_init.py:init():883] sending inform_init request
+2025-11-04 00:25:37,769 INFO    MainThread:148864 [wandb_init.py:init():891] backend started and connected
+2025-11-04 00:25:37,773 INFO    MainThread:148864 [wandb_init.py:init():961] updated telemetry
+2025-11-04 00:25:37,816 INFO    MainThread:148864 [wandb_init.py:init():985] communicating run to backend with 90.0 second timeout
+2025-11-04 00:26:08,734 INFO    Thread-4 (wrapped_target):148864 [retry.py:__call__():165] [no run ID] Retry attempt failed:
+Traceback (most recent call last):
+  File "/home/CORP/zhuo.zhi/miniconda3/envs/qwen2.5omniemo/lib/python3.12/site-packages/urllib3/connection.py", line 198, in _new_conn
+    sock = connection.create_connection(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/CORP/zhuo.zhi/miniconda3/envs/qwen2.5omniemo/lib/python3.12/site-packages/urllib3/util/connection.py", line 85, in create_connection
+    raise err
+  File "/home/CORP/zhuo.zhi/miniconda3/envs/qwen2.5omniemo/lib/python3.12/site-packages/urllib3/util/connection.py", line 73, in create_connection
+    sock.connect(sa)
+TimeoutError: timed out
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/CORP/zhuo.zhi/miniconda3/envs/qwen2.5omniemo/lib/python3.12/site-packages/urllib3/connectionpool.py", line 787, in urlopen
+    response = self._make_request(
+               ^^^^^^^^^^^^^^^^^^^
+  File "/home/CORP/zhuo.zhi/miniconda3/envs/qwen2.5omniemo/lib/python3.12/site-packages/urllib3/connectionpool.py", line 488, in _make_request
+    raise new_e
+  File "/home/CORP/zhuo.zhi/miniconda3/envs/qwen2.5omniemo/lib/python3.12/site-packages/urllib3/connectionpool.py", line 464, in _make_request
+    self._validate_conn(conn)
+  File "/home/CORP/zhuo.zhi/miniconda3/envs/qwen2.5omniemo/lib/python3.12/site-packages/urllib3/connectionpool.py", line 1093, in _validate_conn
+    conn.connect()
+  File "/home/CORP/zhuo.zhi/miniconda3/envs/qwen2.5omniemo/lib/python3.12/site-packages/urllib3/connection.py", line 753, in connect
+    self.sock = sock = self._new_conn()
+                       ^^^^^^^^^^^^^^^^
+  File "/home/CORP/zhuo.zhi/miniconda3/envs/qwen2.5omniemo/lib/python3.12/site-packages/urllib3/connection.py", line 207, in _new_conn
+    raise ConnectTimeoutError(
+urllib3.exceptions.ConnectTimeoutError: (<urllib3.connection.HTTPSConnection object at 0x7f48053751c0>, 'Connection to api.wandb.ai timed out. (connect timeout=20)')
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/CORP/zhuo.zhi/miniconda3/envs/qwen2.5omniemo/lib/python3.12/site-packages/requests/adapters.py", line 644, in send
+    resp = conn.urlopen(
+           ^^^^^^^^^^^^^
+  File "/home/CORP/zhuo.zhi/miniconda3/envs/qwen2.5omniemo/lib/python3.12/site-packages/urllib3/connectionpool.py", line 841, in urlopen
+    retries = retries.increment(
+              ^^^^^^^^^^^^^^^^^^
+  File "/home/CORP/zhuo.zhi/miniconda3/envs/qwen2.5omniemo/lib/python3.12/site-packages/urllib3/util/retry.py", line 519, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='api.wandb.ai', port=443): Max retries exceeded with url: /graphql (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x7f48053751c0>, 'Connection to api.wandb.ai timed out. (connect timeout=20)'))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/CORP/zhuo.zhi/miniconda3/envs/qwen2.5omniemo/lib/python3.12/site-packages/wandb/sdk/lib/retry.py", line 158, in __call__
+    result = self._call_fn(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/CORP/zhuo.zhi/miniconda3/envs/qwen2.5omniemo/lib/python3.12/site-packages/wandb/sdk/internal/internal_api.py", line 398, in execute
+    return self.client.execute(*args, **kwargs)  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/CORP/zhuo.zhi/miniconda3/envs/qwen2.5omniemo/lib/python3.12/site-packages/wandb/vendor/gql-0.2.0/wandb_gql/client.py", line 52, in execute
+    result = self._get_result(document, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/CORP/zhuo.zhi/miniconda3/envs/qwen2.5omniemo/lib/python3.12/site-packages/wandb/vendor/gql-0.2.0/wandb_gql/client.py", line 60, in _get_result
+    return self.transport.execute(document, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/CORP/zhuo.zhi/miniconda3/envs/qwen2.5omniemo/lib/python3.12/site-packages/wandb/sdk/lib/gql_request.py", line 69, in execute
+    request = self.session.post(self.url, **post_args)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/CORP/zhuo.zhi/miniconda3/envs/qwen2.5omniemo/lib/python3.12/site-packages/requests/sessions.py", line 637, in post
+    return self.request("POST", url, data=data, json=json, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/CORP/zhuo.zhi/miniconda3/envs/qwen2.5omniemo/lib/python3.12/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/CORP/zhuo.zhi/miniconda3/envs/qwen2.5omniemo/lib/python3.12/site-packages/requests/sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/CORP/zhuo.zhi/miniconda3/envs/qwen2.5omniemo/lib/python3.12/site-packages/requests/adapters.py", line 665, in send
+    raise ConnectTimeout(e, request=request)
+requests.exceptions.ConnectTimeout: HTTPSConnectionPool(host='api.wandb.ai', port=443): Max retries exceeded with url: /graphql (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x7f48053751c0>, 'Connection to api.wandb.ai timed out. (connect timeout=20)'))
