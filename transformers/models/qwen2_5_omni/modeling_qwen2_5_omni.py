@@ -2565,11 +2565,30 @@ class Qwen2_5OmniThinkerForConditionalGeneration(Qwen2_5OmniPreTrainedModelForCo
 
         >>> response = processor.batch_decode(generate_ids, skip_special_tokens=True, clean_up_tokenization_spaces=False)[0]
         ```"""
-        
+        # ===== DEBUG: 推理时打印 =====
+        # if  input_ids is not None:
+        #     # 只在第一次或每100次打印
+        #     if not hasattr(self, '_inference_count'):
+        #         self._inference_count = 0
+            
+        #     self._inference_count += 1
+        #     if self._inference_count <= 3 or self._inference_count % 100 == 0:
+        #         print(f"\n[INFERENCE] Call #{self._inference_count}")
+        #         print(f"input_ids shape: {input_ids.shape}")
+        #         print(f"Last 20 input_ids: {input_ids[0, -20:].tolist() if input_ids.shape[1] >= 20 else input_ids[0].tolist()}")
+                
+        #         if hasattr(self, 'tokenizer'):
+        #             last_tokens = self.tokenizer.convert_ids_to_tokens(
+        #                 input_ids[0, -20:].tolist() if input_ids.shape[1] >= 20 else input_ids[0].tolist()
+        #             )
+        #             print(f"Last tokens: {last_tokens}")
+        # =============================
+
         #下面是测试input_ids的原始值是什么
-        # from pprint import pprint
-        # texts = self.tokenizer.batch_decode(input_ids, skip_special_tokens=False)
-        # pprint(texts, width=200)
+        from pprint import pprint
+        texts = self.tokenizer.batch_decode(input_ids, skip_special_tokens=False)
+        # pprint(f'we use texts = self.tokenizer.batch_decode(input_ids, skip_special_tokens=False) and the text is {texts}', width=200)
+        print(f'we use texts = self.tokenizer.batch_decode(input_ids, skip_special_tokens=False) and the text is {texts}')
         # print(labels.cpu().tolist())
         '''
         ##############################################################################下面都是debug
@@ -2932,6 +2951,35 @@ class Qwen2_5OmniThinkerForConditionalGeneration(Qwen2_5OmniPreTrainedModelForCo
 
         hidden_states = outputs[0]
         logits = self.lm_head(hidden_states)  # [B, T, V]
+
+        # ===== DEBUG: 分析logits分布 =====
+        if not self.training:  # 只在推理时
+            with torch.no_grad():
+                # 取最后一个位置的logits
+                last_logits = logits[0, -1, :]  # [V]
+                top_k = 10
+                top_probs, top_ids = torch.topk(torch.softmax(last_logits, dim=0), top_k)
+                
+                if not hasattr(self, '_logits_debug_count'):
+                    self._logits_debug_count = 0
+                self._logits_debug_count += 1
+                
+                if self._logits_debug_count <= 5:
+                    print(f"\n[LOGITS DEBUG] #{self._logits_debug_count}")
+                    print(f"Top {top_k} predictions at last position:")
+                    for prob, tid in zip(top_probs.tolist(), top_ids.tolist()):
+                        token = self.tokenizer.decode([tid])
+                        print(f"  {tid:6d} ({repr(token):20s}): {prob:.4f}")
+                    
+                    comma_id = 11
+                    audio_eos_id = 151648
+                    comma_prob = torch.softmax(last_logits, dim=0)[comma_id].item()
+                    print(f"\nComma (ID={comma_id}) probability: {comma_prob:.6f}")
+                    if audio_eos_id < last_logits.shape[0]:
+                        eos_prob = torch.softmax(last_logits, dim=0)[audio_eos_id].item()
+                        print(f"Audio_eos (ID={audio_eos_id}) probability: {eos_prob:.6f}")
+        # ==================================
+
 
         loss = None
         if labels is not None:

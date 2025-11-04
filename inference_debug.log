@@ -1,0 +1,278 @@
+Unrecognized keys in `rope_scaling` for 'rope_type'='default': {'mrope_section'}
+
+================================================================================
+BATCH EMOTION RECOGNITION INFERENCE
+================================================================================
+
+Loading prompt from: /home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/user_prompt.txt
+✓ Prompt loaded (1105 chars)
+
+Extracting audio from video...
+✓ Extracted audio to: /tmp/batch_inference_audio.wav
+Video duration: 58.93s
+
+Loading model from: /home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/output/lemon_omni_lora_1104/merged
+Loading checkpoint shards:   0%|          | 0/4 [00:00<?, ?it/s]Loading checkpoint shards:  25%|██▌       | 1/4 [00:01<00:05,  1.83s/it]Loading checkpoint shards:  50%|█████     | 2/4 [00:02<00:02,  1.36s/it]Loading checkpoint shards:  75%|███████▌  | 3/4 [00:03<00:01,  1.21s/it]Loading checkpoint shards: 100%|██████████| 4/4 [00:04<00:00,  1.04it/s]Loading checkpoint shards: 100%|██████████| 4/4 [00:04<00:00,  1.12s/it]
+Unused or unrecognized kwargs: images.
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+✓ Model loaded
+
+Loading video...
+✓ Loaded 294 video frames
+Loading audio...
+✓ Loaded audio: 58.82s
+
+================================================================================
+BATCH INFERENCE (All chunks at once)
+================================================================================
+
+Base prompt:
+<|im_start|>system
+You are a helpful assistant.<|im_end|>
+<|im_start|>user
+You are a multimodal emotion analysis assistant. 
+You will receive continuous video and audio streams and must identify the d...
+
+Building input with 100 chunks...
+  Chunk 1/100: 549 chars
+  Chunk 2/100: 549 chars
+  Chunk 3/100: 549 chars
+  Chunk 100/100: 549 chars
+
+Total text length: 56212 chars
+Tokenizing...
+Input tokens: 6277
+Last 20 tokens: ['<|VIDEO|>', '<|VIDEO|>', '<|VIDEO|>', '<|VIDEO|>', '<|VIDEO|>', '<|VIDEO|>', '<|VIDEO|>', '<|vision_eos|>', '<|audio_bos|>', '<|AUDIO|>', '<|AUDIO|>', '<|AUDIO|>', '<|AUDIO|>', '<|AUDIO|>', '<|AUDIO|>', '<|AUDIO|>', '<|AUDIO|>', '<|AUDIO|>', '<|AUDIO|>', '<|audio_eos|>']
+Computing position IDs...
+Generating (max_new_tokens=2000)...
+
+
+[INFERENCE] Call #1
+input_ids shape: torch.Size([1, 6277])
+Last 20 input_ids: [151656, 151656, 151656, 151656, 151656, 151656, 151656, 151653, 151647, 151646, 151646, 151646, 151646, 151646, 151646, 151646, 151646, 151646, 151646, 151648]
+Last tokens: ['<|VIDEO|>', '<|VIDEO|>', '<|VIDEO|>', '<|VIDEO|>', '<|VIDEO|>', '<|VIDEO|>', '<|VIDEO|>', '<|vision_eos|>', '<|audio_bos|>', '<|AUDIO|>', '<|AUDIO|>', '<|AUDIO|>', '<|AUDIO|>', '<|AUDIO|>', '<|AUDIO|>', '<|AUDIO|>', '<|AUDIO|>', '<|AUDIO|>', '<|AUDIO|>', '<|audio_eos|>']
+
+[LOGITS DEBUG] #1
+Top 10 predictions at last position:
+      11 (','                 ): 1.0000
+    2572 ('.,'                ): 0.0006
+     701 ('),'                ): 0.0001
+    1154 (' ,'                ): 0.0001
+      78 ('o'                 ): 0.0001
+      48 ('Q'                 ): 0.0000
+      13 ('.'                 ): 0.0000
+      79 ('p'                 ): 0.0000
+      42 ('K'                 ): 0.0000
+       8 (')'                 ): 0.0000
+
+Comma (ID=11) probability: 1.000000
+Audio_eos (ID=151648) probability: 0.000000
+
+[INFERENCE] Call #2
+input_ids shape: torch.Size([1, 1])
+Last 20 input_ids: [11]
+Last tokens: [',']
+
+[LOGITS DEBUG] #2
+Top 10 predictions at last position:
+      11 (','                 ): 1.0000
+    2572 ('.,'                ): 0.0000
+     701 ('),'                ): 0.0000
+   44662 ('+,'                ): 0.0000
+   10631 (',,'                ): 0.0000
+    1154 (' ,'                ): 0.0000
+     516 ("',"                ): 0.0000
+   46021 (',)'                ): 0.0000
+    3837 ('，'                 ): 0.0000
+   31683 (' comma'            ): 0.0000
+
+Comma (ID=11) probability: 1.000000
+Audio_eos (ID=151648) probability: 0.000000
+
+[INFERENCE] Call #3
+input_ids shape: torch.Size([1, 1])
+Last 20 input_ids: [11]
+Last tokens: [',']
+
+[LOGITS DEBUG] #3
+Top 10 predictions at last position:
+      11 (','                 ): 0.9961
+   10631 (',,'                ): 0.0032
+    2572 ('.,'                ): 0.0001
+   60723 (',,,'               ): 0.0000
+   46021 (',)'                ): 0.0000
+    3837 ('，'                 ): 0.0000
+   59564 (',),'               ): 0.0000
+    1092 ('Com'               ): 0.0000
+     516 ("',"                ): 0.0000
+    4999 (',-'                ): 0.0000
+
+Comma (ID=11) probability: 0.996094
+Audio_eos (ID=151648) probability: 0.000000
+
+[LOGITS DEBUG] #4
+Top 10 predictions at last position:
+      11 (','                 ): 0.9883
+   10631 (',,'                ): 0.0097
+   60723 (',,,'               ): 0.0004
+    2572 ('.,'                ): 0.0000
+   46021 (',)'                ): 0.0000
+   59564 (',),'               ): 0.0000
+   80258 (' ,,'               ): 0.0000
+    1092 ('Com'               ): 0.0000
+    3837 ('，'                 ): 0.0000
+   54145 (',)\n'              ): 0.0000
+
+Comma (ID=11) probability: 0.988281
+Audio_eos (ID=151648) probability: 0.000000
+
+[LOGITS DEBUG] #5
+Top 10 predictions at last position:
+      11 (','                 ): 0.9961
+   10631 (',,'                ): 0.0025
+   60723 (',,,'               ): 0.0005
+    2572 ('.,'                ): 0.0000
+   46021 (',)'                ): 0.0000
+   80258 (' ,,'               ): 0.0000
+   36519 ('-,'                ): 0.0000
+    1092 ('Com'               ): 0.0000
+   59564 (',),'               ): 0.0000
+     287 ('ing'               ): 0.0000
+
+Comma (ID=11) probability: 0.996094
+Audio_eos (ID=151648) probability: 0.000000
+
+[INFERENCE] Call #100
+input_ids shape: torch.Size([1, 1])
+Last 20 input_ids: [11]
+Last tokens: [',']
+
+[INFERENCE] Call #200
+input_ids shape: torch.Size([1, 1])
+Last 20 input_ids: [11]
+Last tokens: [',']
+
+[INFERENCE] Call #300
+input_ids shape: torch.Size([1, 1])
+Last 20 input_ids: [11]
+Last tokens: [',']
+
+[INFERENCE] Call #400
+input_ids shape: torch.Size([1, 1])
+Last 20 input_ids: [11]
+Last tokens: [',']
+
+[INFERENCE] Call #500
+input_ids shape: torch.Size([1, 1])
+Last 20 input_ids: [11]
+Last tokens: [',']
+
+[INFERENCE] Call #600
+input_ids shape: torch.Size([1, 1])
+Last 20 input_ids: [11]
+Last tokens: [',']
+
+[INFERENCE] Call #700
+input_ids shape: torch.Size([1, 1])
+Last 20 input_ids: [11]
+Last tokens: [',']
+
+[INFERENCE] Call #800
+input_ids shape: torch.Size([1, 1])
+Last 20 input_ids: [11]
+Last tokens: [',']
+
+[INFERENCE] Call #900
+input_ids shape: torch.Size([1, 1])
+Last 20 input_ids: [11]
+Last tokens: [',']
+
+[INFERENCE] Call #1000
+input_ids shape: torch.Size([1, 1])
+Last 20 input_ids: [11]
+Last tokens: [',']
+
+[INFERENCE] Call #1100
+input_ids shape: torch.Size([1, 1])
+Last 20 input_ids: [11]
+Last tokens: [',']
+
+[INFERENCE] Call #1200
+input_ids shape: torch.Size([1, 1])
+Last 20 input_ids: [11]
+Last tokens: [',']
+
+[INFERENCE] Call #1300
+input_ids shape: torch.Size([1, 1])
+Last 20 input_ids: [11]
+Last tokens: [',']
+
+[INFERENCE] Call #1400
+input_ids shape: torch.Size([1, 1])
+Last 20 input_ids: [11]
+Last tokens: [',']
+
+[INFERENCE] Call #1500
+input_ids shape: torch.Size([1, 1])
+Last 20 input_ids: [11]
+Last tokens: [',']
+
+[INFERENCE] Call #1600
+input_ids shape: torch.Size([1, 1])
+Last 20 input_ids: [11]
+Last tokens: [',']
+
+[INFERENCE] Call #1700
+input_ids shape: torch.Size([1, 1])
+Last 20 input_ids: [11]
+Last tokens: [',']
+
+[INFERENCE] Call #1800
+input_ids shape: torch.Size([1, 1])
+Last 20 input_ids: [11]
+Last tokens: [',']
+
+[INFERENCE] Call #1900
+input_ids shape: torch.Size([1, 1])
+Last 20 input_ids: [11]
+Last tokens: [',']
+
+[INFERENCE] Call #2000
+input_ids shape: torch.Size([1, 1])
+Last 20 input_ids: [11]
+Last tokens: [',']
+✓ Generated 2000 tokens
+
+================================================================================
+GENERATED TEXT
+================================================================================
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+
+... (truncated, total 2000 chars)
+================================================================================
+
+Found 0 emotion change(s)
+
+================================================================================
+FINAL RESULTS
+================================================================================
+Total emotion changes detected: 0
+
+No emotion changes detected.
+✓ Cleaned up temp audio file
+
+================================================================================
+INFERENCE COMPLETE
+================================================================================
+

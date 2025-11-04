@@ -349,10 +349,10 @@ class MMPluginMixin:
             )
             videos = self._regularize_videos(
                 videos,
-                image_max_pixels=getattr(processor, "video_max_pixels", 256 * 256),
+                image_max_pixels=getattr(processor, "video_max_pixels", 192 * 192),
                 image_min_pixels=getattr(processor, "video_min_pixels", 16 * 16),
-                video_fps=getattr(processor, "video_fps", 2.0),
-                video_maxlen=getattr(processor, "video_maxlen", 128),
+                video_fps=getattr(processor, "video_fps", 5.0),
+                video_maxlen=getattr(processor, "video_maxlen", 300),
             )["videos"]
             if "videos" in inspect.signature(video_processor.preprocess).parameters:  # for qwen2_vl and video_llava
                 # mm_inputs.update(video_processor(images=None, videos=videos, return_tensors="pt"))
@@ -518,10 +518,10 @@ class Qwen2VLPlugin(BasePlugin):
         if len(videos) != 0:
             video_data = self._regularize_videos(
                 videos,
-                image_max_pixels=getattr(processor, "video_max_pixels", 256 * 256),
+                image_max_pixels=getattr(processor, "video_max_pixels", 192 * 192),
                 image_min_pixels=getattr(processor, "video_min_pixels", 16 * 16),
-                video_fps=getattr(processor, "video_fps", 2.0),
-                video_maxlen=getattr(processor, "video_maxlen", 128),
+                video_fps=getattr(processor, "video_fps", 5.0),
+                video_maxlen=getattr(processor, "video_maxlen", 300),
             )
             mm_inputs.update(image_processor(images=None, videos=video_data["videos"], return_tensors="pt"))
             temporal_patch_size: int = getattr(image_processor, "temporal_patch_size", 2)
@@ -671,10 +671,10 @@ class Qwen2OmniPlugin(Qwen2VLPlugin):
             try:
                 video_dict = self._regularize_videos(
                     videos,
-                    image_max_pixels=getattr(processor, "video_max_pixels", 256 * 256),
+                    image_max_pixels=getattr(processor, "video_max_pixels", 192 * 192),
                     image_min_pixels=getattr(processor, "video_min_pixels", 16 * 16),
                     video_fps=getattr(processor, "video_fps", 5.0),
-                    video_maxlen=getattr(processor, "video_maxlen", 128),
+                    video_maxlen=getattr(processor, "video_maxlen", 300),
                 )
                 # out = video_processor(videos=video_dict["videos"], return_tensors="pt")
                 out = video_processor(videos=video_dict["videos"])

@@ -1,5 +1,5 @@
 # === model ===
-model_name_or_path: "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/output/lemon_omni_lora/merged"  # 使用 merged 下的 tokenizer/processor
+model_name_or_path: "/home/CORP/zhuo.zhi/Project/Qwen2.5-Omni-EMO/output/lemon_omni_lora_1104/merged"  # 使用 merged 下的 tokenizer/processor
 trust_remote_code: false   # Qwen2.5-Omni 需要
 
 use_audio_in_video: true
